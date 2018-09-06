@@ -77,8 +77,9 @@ void VisItem::initialize()
     gridTex->bind();
     gridTex->generateMipMaps();
 
-    particleTex = std::unique_ptr<QOpenGLTexture>(new QOpenGLTexture(QImage(":textures/particle.png").mirrored()));
+    particleTex = std::unique_ptr<QOpenGLTexture>(new QOpenGLTexture(QImage(":textures/cube.png").mirrored()));
     particleTex->setMinMagFilters(QOpenGLTexture::LinearMipMapLinear, QOpenGLTexture::Linear);
+    particleTex->setWrapMode(QOpenGLTexture::Repeat);
     particleTex->bind();
     particleTex->generateMipMaps();
 
@@ -152,7 +153,7 @@ void VisItem::drawGrid()
 
     // Draw screen-filling quad with gridTex according to above texture coordinates.
     gridTex->bind();
-    glfn->glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glfn->glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
     glfn->glBegin(GL_QUADS);
     glfn->glTexCoord2f(left, bottom);
     glfn->glVertex2f(view.left(), view.bottom());

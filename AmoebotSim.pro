@@ -1,116 +1,20 @@
-QT      += core gui qml quick
-CONFIG  += c++11
-TARGET    = AmoebotSim
-TEMPLATE  = app
+!include( ../amoebotsim/examples.pri ) {
+    error( "Couldn't find the examples.pri file!" )
+}
 
-macx:ICON = res/icon/icon.icns
-QMAKE_INFO_PLIST = res/Info.plist
-
-win32:RC_FILE = res/AmoebotSim.rc
-
-HEADERS += \
-    alg/legacy/algorithm.h \
-    alg/legacy/algorithmwithflags.h \
-    main/application.h \
-    script/scriptinterface.h \
-    alg/legacy/movement.h \
-    sim/node.h \
-    sim/particle.h \
-    sim/simulator.h \
-    sim/system.h \
-    ui/glitem.h \
-    ui/commandhistorymanager.h \
-    ui/visitem.h \
-    alg/ring.h \
-    alg/line.h \
-    alg/legacy/boundedobjcoating.h \
-    alg/legacy/compaction.h \
-    alg/legacy/universalcoating.h \
-    alg/legacy/leaderelectiondemo.h \
-    alg/legacy/leaderelection.h \
-    helper/universalcoatinghelper.h \
-    helper/rect.h \
-    helper/misc.h \
-    helper/bipartitematchinggraph.h \
-    ui/view.h \
-    alg/legacy/legacysystem.h \
-    alg/legacy/legacyparticle.h \
-    alg/amoebotparticle.h \
-    alg/amoebotsystem.h \
-    helper/randomnumbergenerator.h \
-    alg/tokendemo.h \
-    script/scriptengine.h \
-    alg/ising.h \
-    alg/compression.h \
-    alg/adder.h \
-    alg/rectangle.h \
-    alg/sierpinski.h \
-    alg/matrix.h \
-    alg/linesort.h \
-    alg/matrix2.h \
-    alg/2sitecbridge.h \
-    alg/edgedetect.h \
-    alg/twositeebridge.h \
-    alg/localparticle.h \
-    alg/infobjcoating.h \
-    alg/faultrepair.h \
-    alg/convexhull.h \
-    sim/tile.h \
-    alg/shapeformation.h \
-    alg/holeelimination.h
+QT += 3dcore 3drender 3dinput 3dquick 3dlogic qml quick 3dquickextras
 
 SOURCES += \
-    alg/legacy/algorithm.cpp \
-    main/application.cpp \
-    main/main.cpp\
-    sim/particle.cpp \
-    sim/simulator.cpp \
-    sim/system.cpp \
-    ui/commandhistorymanager.cpp \
-    ui/glitem.cpp \
-    ui/visitem.cpp \
-    alg/ring.cpp \
-    alg/line.cpp \
-    alg/legacy/boundedobjcoating.cpp \
-    alg/legacy/compaction.cpp \
-    alg/legacy/universalcoating.cpp \
-    alg/legacy/leaderelectiondemo.cpp \
-    alg/legacy/leaderelection.cpp \
-    alg/legacy/legacysystem.cpp \
-    alg/legacy/legacyparticle.cpp \
-    alg/amoebotparticle.cpp \
-    alg/amoebotsystem.cpp \
-    helper/randomnumbergenerator.cpp \
-    alg/tokendemo.cpp \
-    script/scriptinterface.cpp \
-    script/scriptengine.cpp \
-    ui/view.cpp \
-    alg/ising.cpp \
-    alg/compression.cpp \
-    alg/adder.cpp \
-    alg/rectangle.cpp \
-    alg/sierpinski.cpp \
-    alg/matrix.cpp \
-    alg/linesort.cpp \
-    alg/matrix2.cpp \
-    alg/2sitecbridge.cpp \
-    alg/edgedetect.cpp \
-    alg/twositeebridge.cpp \
-    alg/localparticle.cpp \
-    alg/infobjcoating.cpp \
-    alg/faultrepair.cpp \
-    alg/convexhull.cpp \
-    sim/tile.cpp \
-    alg/shapeformation.cpp \
-    alg/holeelimination.cpp
-
-RESOURCES += \
-    res/qml.qrc \
-    res/textures.qrc
+    main.cpp
 
 OTHER_FILES += \
-    res/qml/A_Button.qml \
-    res/qml/A_Inspector.qml \
-    res/qml/A_ResultTextField.qml \
-    res/qml/A_TextField.qml \
-    res/qml/main.qml
+    main.qml
+
+RESOURCES += \
+    simple-qml.qrc
+
+HEADERS += \
+    backend.h
+
+DISTFILES += \
+    examples.pri

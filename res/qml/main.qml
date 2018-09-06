@@ -243,7 +243,7 @@ ApplicationWindow {
         }
     }
 
-    Row {
+    Row { 
         id: buttonRow
         spacing: 10
         anchors.margins: 10
