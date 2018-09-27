@@ -56,72 +56,81 @@ import Qt3D.Extras 2.0
 import QtQuick.Controls 2.0
 import io.qt.examples.backend 1.0
 
-Entity {
-    id: sceneRoot
-
-    Camera {
-        id: camera
-        projectionType: CameraLens.PerspectiveProjection
-        fieldOfView: 45
-        aspectRatio: 16/9
-        nearPlane : 0.1
-        farPlane : 1000.0
-        position: Qt.vector3d( 0.0, 0.0, -40.0 )
-        upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
-        viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
-    }
-
-    OrbitCameraController {
-        camera: camera
-    }
-
-    components: [
-        RenderSettings {
-            activeFrameGraph: ForwardRenderer {
-                clearColor: Qt.rgba(0, 0.5, 1, 1)
-                camera: camera
-            }
-        },
-        // Event Source will be set by the Qt3DQuickWindow
-        InputSettings { }
-    ]
-
-    PhongMaterial {
-        id: material
-    }
-
-    BackEnd {
-        id:backend
-    }
-
     Entity {
-        id: spheres
+        id: sceneRoot
 
-        SphereMesh {
-            id: sphereMes
-            slices: 60
-            rings: 60
-            radius: 0.65
+        Camera {
+            id: camera
+            projectionType: CameraLens.PerspectiveProjection
+            fieldOfView: 45
+            aspectRatio: 16/9
+            nearPlane : 0.1
+            farPlane : 1000.0
+            position: Qt.vector3d( 0.0, 0.0, -40.0 )
+            upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
+            viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
         }
 
-        NodeInstantiator {
-            id: grid
+        OrbitCameraController {
+            camera: camera
+        }
 
-            property int rows: 5
-            property int columns: 5
-            property int width: 5
-
-            model: rows * columns * width
-
-            Entity {
-
-                Transform {
-                    id: sphereTransformer
-                    translation: backend.location
+        components: [
+            RenderSettings {
+                activeFrameGraph: ForwardRenderer {
+                    clearColor: Qt.rgba(0, 0.5, 1, 1)
+                    camera: camera
                 }
+            },
+            // Event Source will be set by the Qt3DQuickWindow
+            InputSettings { }
+        ]
 
-                components: [ sphereTransformer, sphereMes, material ]
+        PhongMaterial {
+            id: material
+        }
+
+        BackEnd {
+            id:backend
+        }
+
+        Entity {
+            id: spheres
+
+            SphereMesh {
+                id: sphereMes
+                slices: 60
+                rings: 60
+                radius: 0.65
+            }
+
+            NodeInstantiator {
+                id: grid
+
+                property int rows: 5
+                property int columns: 5
+                property int width: 5
+
+                model: rows * columns * width
+
+                Entity {
+
+                    Transform {
+                        id: sphereTransformer
+                        translation: backend.location
+                    }
+
+                    components: [ sphereTransformer, sphereMes, material ]
+                }
+            }
+        }
+        Entity{
+            Slider {
+                value: 0.5
             }
         }
     }
-}
+
+
+
+
