@@ -49,7 +49,6 @@
 ****************************************************************************/
 import QtQuick.Controls 1.4
 import Qt3D.Core 2.0
-import Qt3D.Core 2.0
 import Qt3D.Render 2.0
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.0
@@ -57,37 +56,20 @@ import io.qt.examples.backend 1.0
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.2
 import QtQuick.Scene3D 2.0
-import QtQuick 2.6 as QQ2
 import QtQuick 2.6
 import QtQuick.Controls 2.0
-Item{
+Window{
     id: mainWindow
     width: 1270
     height: 768
     visible: true
 
-
-    Rectangle {
-        id: scene1
-        anchors.fill: parent
-        anchors.margins: 50
-
-        transform:Rotation {
-            id:sceneRotation
-            axis.x: 1
-            axis.y: 0
-            axis.z: 0
-            origin.x: scene1.width /2
-            origin.y: scene1.height /2
-        }
-
         Scene3D {
-            id: scene2
+            id: scene
             anchors.fill: parent
-            focus:true
-            aspects: ["input", "logic"]
+            focus: true
+            aspects: ["input", "logic","render"]
             cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
-
 
 
                 Entity {
@@ -105,10 +87,12 @@ Item{
                         viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
                     }
 
-                    FirstPersonCameraController {
+                    OrbitCameraController {
                         camera: camera
                     }
+
                     InputSettings { }
+
                     components: [
                         RenderSettings {
                             activeFrameGraph: ForwardRenderer {
@@ -164,13 +148,13 @@ Item{
 
 
         }
-    }
 
 
 
     Row {
         anchors.top: parent.top
         anchors.topMargin: 10
+        focus: false
 
             Button {
                 id: start
@@ -178,7 +162,6 @@ Item{
                 z: 2
                 anchors.left: parent.left
                 anchors.top: parent.top
-                //anchors.topMargin: 10
                 anchors.leftMargin: 10
 
             }
@@ -189,9 +172,7 @@ Item{
                 z: 2
                 anchors.left: parent.left
                 anchors.top: parent.top
-                //anchors.topMargin: 10
                 anchors.leftMargin: 125
-
             }
 
 
@@ -202,6 +183,7 @@ Item{
 
         Slider {
             id: durationSlider
+            focus: false
             value: .50
             orientation: Qt.Vertical
             stepSize: .1
@@ -214,10 +196,6 @@ Item{
         }
 
 }
-
-
-
-
 
 
 

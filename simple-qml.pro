@@ -8,7 +8,9 @@ SOURCES += \
     main.cpp
 
 OTHER_FILES += \
-    main.qml
+    main.qml \
+    MyEntity.qml \
+    MySimControls.qml
 
 RESOURCES += \
     simple-qml.qrc
