@@ -47,81 +47,182 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
-import QtQuick 2.6 as QQ2
+import QtQuick.Controls 1.4
+import Qt3D.Core 2.0
 import Qt3D.Core 2.0
 import Qt3D.Render 2.0
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.0
-import QtQuick.Controls 2.0
 import io.qt.examples.backend 1.0
+import QtQuick.Layouts 1.11
+import QtQuick.Window 2.2
+import QtQuick.Scene3D 2.0
+import QtQuick 2.6 as QQ2
+import QtQuick 2.6
+import QtQuick.Controls 2.0
+Item{
+    id: mainWindow
+    width: 1270
+    height: 768
+    visible: true
 
-Entity {
-    id: sceneRoot
 
-    Camera {
-        id: camera
-        projectionType: CameraLens.PerspectiveProjection
-        fieldOfView: 45
-        aspectRatio: 16/9
-        nearPlane : 0.1
-        farPlane : 1000.0
-        position: Qt.vector3d( 0.0, 0.0, -40.0 )
-        upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
-        viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
-    }
+    Rectangle {
+        id: scene1
+        anchors.fill: parent
+        anchors.margins: 50
 
-    OrbitCameraController {
-        camera: camera
-    }
-
-    components: [
-        RenderSettings {
-            activeFrameGraph: ForwardRenderer {
-                clearColor: Qt.rgba(0, 0.5, 1, 1)
-                camera: camera
-            }
-        },
-        // Event Source will be set by the Qt3DQuickWindow
-        InputSettings { }
-    ]
-
-    PhongMaterial {
-        id: material
-    }
-
-    BackEnd {
-        id:backend
-    }
-
-    Entity {
-        id: spheres
-
-        SphereMesh {
-            id: sphereMes
-            slices: 60
-            rings: 60
-            radius: 0.65
+        transform:Rotation {
+            id:sceneRotation
+            axis.x: 1
+            axis.y: 0
+            axis.z: 0
+            origin.x: scene1.width /2
+            origin.y: scene1.height /2
         }
 
-        NodeInstantiator {
-            id: grid
+        Scene3D {
+            id: scene2
+            anchors.fill: parent
+            focus:true
+            aspects: ["input", "logic"]
+            cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
 
-            property int rows: 5
-            property int columns: 5
-            property int width: 5
 
-            model: rows * columns * width
 
-            Entity {
+                Entity {
+                    id: sceneRoot
 
-                Transform {
-                    id: sphereTransformer
-                    translation: backend.location
+                    Camera {
+                        id: camera
+                        projectionType: CameraLens.PerspectiveProjection
+                        fieldOfView: 45
+                        aspectRatio: 16/9
+                        nearPlane : 0.1
+                        farPlane : 1000.0
+                        position: Qt.vector3d( 0.0, 0.0, -40.0 )
+                        upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
+                        viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
+                    }
+
+                    FirstPersonCameraController {
+                        camera: camera
+                    }
+                    InputSettings { }
+                    components: [
+                        RenderSettings {
+                            activeFrameGraph: ForwardRenderer {
+                                camera: camera
+                                clearColor: Qt.rgba(0, 0.5, 1, 1)
+                            }
+                        }
+                        // Event Source will be set by the Qt3DQuickWindow
+
+                    ]
+
+                    PhongMaterial {
+                        id: material
+                    }
+
+                    BackEnd {
+                        id:backend
+                    }
+
+                    Entity {
+                        id: spheres
+
+                        SphereMesh {
+                            id: sphereMes
+                            slices: 60
+                            rings: 60
+                            radius: 0.65
+                        }
+
+                        NodeInstantiator {
+                            id: grid
+
+                            property int rows: 5
+                            property int columns: 5
+                            property int width: 5
+
+                            model: rows * columns * width
+
+                            Entity {
+
+                                Transform {
+                                    id: sphereTransformer
+                                    translation: backend.location
+                                }
+
+                                components: [ sphereTransformer, sphereMes, material ]
+                            }
+                        }
+                    }
+
                 }
 
-                components: [ sphereTransformer, sphereMes, material ]
-            }
+
+
         }
     }
+
+
+
+    Row {
+        anchors.top: parent.top
+        anchors.topMargin: 10
+
+            Button {
+                id: start
+                text: "Start"
+                z: 2
+                anchors.left: parent.left
+                anchors.top: parent.top
+                //anchors.topMargin: 10
+                anchors.leftMargin: 10
+
+            }
+
+            Button {
+                id: stop
+                text: "Stop"
+                z: 2
+                anchors.left: parent.left
+                anchors.top: parent.top
+                //anchors.topMargin: 10
+                anchors.leftMargin: 125
+
+            }
+
+
+
+
+     }
+
+
+        Slider {
+            id: durationSlider
+            value: .50
+            orientation: Qt.Vertical
+            stepSize: .1
+            z: 2
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 10
+            anchors.bottomMargin: 10
+
+        }
+
 }
+
+
+
+
+
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/
