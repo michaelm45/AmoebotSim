@@ -58,18 +58,16 @@ import QtQuick.Window 2.2
 import QtQuick.Scene3D 2.0
 import QtQuick 2.6
 import QtQuick.Controls 2.0
-Window{
-    id: mainWindow
+Item{
     width: 1270
     height: 768
-    visible: true
 
         Scene3D {
             id: scene
             anchors.fill: parent
-            focus: true
             aspects: ["input", "logic","render"]
             cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
+            focus: true
 
 
                 Entity {
@@ -87,11 +85,7 @@ Window{
                         viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
                     }
 
-                    OrbitCameraController {
-                        camera: camera
-                    }
 
-                    InputSettings { }
 
                     components: [
                         RenderSettings {
@@ -104,6 +98,11 @@ Window{
 
                     ]
 
+                    OrbitCameraController {
+                        camera: camera
+                    }
+                    InputSettings { }
+
                     PhongMaterial {
                         id: material
                     }
@@ -114,6 +113,7 @@ Window{
 
                     Entity {
                         id: spheres
+
 
                         SphereMesh {
                             id: sphereMes
@@ -133,6 +133,12 @@ Window{
 
                             Entity {
 
+                                ObjectPicker {
+                                    //onClicked:
+                                    signal clicked(PickEvent click)
+
+                                }
+
                                 Transform {
                                     id: sphereTransformer
                                     translation: backend.location
@@ -140,6 +146,7 @@ Window{
 
                                 components: [ sphereTransformer, sphereMes, material ]
                             }
+
                         }
                     }
 
@@ -155,6 +162,7 @@ Window{
         anchors.top: parent.top
         anchors.topMargin: 10
         focus: false
+
 
             Button {
                 id: start
@@ -178,7 +186,31 @@ Window{
 
 
 
+
+
      }
+
+
+
+        Text {
+            id: locationText
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.rightMargin: 15
+            text: "{ 0,0,0 }"
+            color: "white"
+            font.family: "Helvetica"
+            font.pointSize: 15
+
+
+           function changeText(x, y, z){
+                 text: "{" + x + ", " + y + ", " + z + "}"
+           }
+
+
+        }
+
 
 
         Slider {
@@ -187,20 +219,26 @@ Window{
             value: .50
             orientation: Qt.Vertical
             stepSize: .1
-            z: 2
+
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.rightMargin: 10
             anchors.bottomMargin: 10
+            wheelEnabled: false
+
 
         }
 
+       /* property int ui_state: 0
+        Keys.onPressed {
+
+            if(event.key == Qt.Key_B && event.key == Qt.Key_Control){
+                roundDurationSlider.visible = false
+            }
+
+            if(ui_state > 1){
+                ui_state = 0
+            }
+        }*/
+
 }
-
-
-
-
-/*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
- ##^##*/

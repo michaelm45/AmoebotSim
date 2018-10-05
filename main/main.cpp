@@ -50,6 +50,7 @@
 
 #include <Qt3DQuickExtras/qt3dquickwindow.h>
 #include <QGuiApplication>
+#include <QQuickView>
 #include "backend.h"
 
 
@@ -59,7 +60,7 @@ int main(int argc, char* argv[])
 
     qmlRegisterType<BackEnd>("io.qt.examples.backend", 1, 0, "BackEnd");
     QGuiApplication app(argc, argv);
-    Qt3DExtras::Quick::Qt3DQuickWindow view;
+    QQuickView view;
     view.setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 
     view.show();
