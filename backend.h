@@ -20,7 +20,7 @@ class BackEnd : public QObject
     Q_OBJECT
     Q_PROPERTY(QVector3D location READ getLocation WRITE setLocation NOTIFY notifyLocation)
     Q_PROPERTY(int spread READ getSpread WRITE setSpread NOTIFY notifySpread)
-
+    //Q_PROPERTY(int )
 
 
 public:

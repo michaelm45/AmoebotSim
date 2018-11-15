@@ -15,7 +15,10 @@ RESOURCES += \
     simple-qml.qrc \
 
 HEADERS += \
-    backend.h
+    backend.h \
+    sim/node.h \
+    sim/particle.h \
+    sim/particle.cpp
 
 DISTFILES += \
     examples.pri \

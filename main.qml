@@ -47,7 +47,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick.Controls 1.4
+
 import Qt3D.Core 2.0
 import Qt3D.Render 2.0
 import Qt3D.Input 2.0
@@ -56,13 +56,13 @@ import io.qt.examples.backend 1.0
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.2
 import QtQuick.Scene3D 2.0
-import QtQuick 2.6
 import QtQuick.Controls 2.0
+import QtQuick 2.6
 Item{
     width: 1270
     height: 768
 
-        Scene3D {
+      Scene3D {
             id: scene
             anchors.fill: parent
             aspects: ["input", "logic","render"]
@@ -101,61 +101,94 @@ Item{
                     OrbitCameraController {
                         camera: camera
                     }
-                    InputSettings { }
 
-                    PhongMaterial {
-                        id: material
-                    }
+                    InputSettings { }
 
                     BackEnd {
                         id:backend
                     }
 
-                    Entity {
-                        id: spheres
+                    NodeInstantiator {
+                        id: grid
 
-
-                        SphereMesh {
-                            id: sphereMes
-                            slices: 60
-                            rings: 60
-                            radius: 0.65
-                        }
-
-                        NodeInstantiator {
-                            id: grid
-
-                            property int rows: 5
-                            property int columns: 5
-                            property int width: 5
-
-                            model: rows * columns * width
+                        model: 1
 
                             Entity {
+                                id:nodes
 
-                                ObjectPicker {
-                                    //onClicked:
-                                    signal clicked(PickEvent click)
 
-                                }
 
                                 Transform {
                                     id: sphereTransformer
                                     translation: backend.location
                                 }
 
+                                PhongMaterial {
+                                    id: material
+                                }
+
+                                SphereMesh {
+                                    id: sphereMes
+                                    slices: 60
+                                    rings: 60
+                                    radius: 0.65
+                                }
+
                                 components: [ sphereTransformer, sphereMes, material ]
+
+                            }
+
+
+                        }
+
+                        NodeInstantiator {
+                            id: edges
+
+                            model: 1
+
+                            Entity {
+                                id:edge
+
+                                ObjectPicker {
+                                    id: picker2
+                                    signal pressed(PickEvent pick)
+                                    onPressed: {
+                                        console.log(pick.localIntersection, pick.worldIntersection)
+                                    }
+
+                                }
+
+
+                                Transform {
+                                    id: edgeTransformer
+                                    translation: backend.location //Qt.vector3d(0,0,0)
+                                    rotation: 90
+                                    rotationX: 45
+                                }
+
+                                PhongMaterial {
+                                    id: material2
+                                }
+
+                                CylinderMesh {
+                                    id: cylMesh
+                                    slices: 20
+                                    rings: 20
+                                    radius: 0.25
+                                }
+
+                                components: [ edgeTransformer, cylMesh, material2 ]
                             }
 
                         }
-                    }
+
 
                 }
 
 
 
-        }
 
+        }
 
 
     Row {
@@ -172,6 +205,8 @@ Item{
                 anchors.top: parent.top
                 anchors.leftMargin: 10
 
+
+
             }
 
             Button {
@@ -181,13 +216,8 @@ Item{
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.leftMargin: 125
+
             }
-
-
-
-
-
-
      }
 
 
@@ -215,30 +245,94 @@ Item{
 
         Slider {
             id: durationSlider
+
             focus: false
-            value: .50
+            value: 50
             orientation: Qt.Vertical
-            stepSize: .1
+            stepSize: 0.1
+            from: 0
+            to: 100
 
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.rightMargin: 10
+            anchors.rightMargin: 25
             anchors.bottomMargin: 10
+            anchors.topMargin: 10
+            topPadding: 5
             wheelEnabled: false
 
+            signal roundDurationChanged(int value)
+            property bool setterDisabled: false;
+            property bool callbackDisabled: false;
+
+            onValueChanged: {
+                if(!callbackDisabled){
+                            roundDurationChanged(transferFunc(value))
+                            roundDurationText.text = transferFunc(value) + " ms"
+                }
+            }
+
+                    onPressedChanged: {
+                        /**When changing the value via slider disable the "setRoundDuration" function
+                        because it is always called when "value" changes. This is because
+                        "onValueChanged" calls "roundDurationChanged" which results in a "setRoundDuration"
+                        call. Therefore we break the cycle by disabling the latter.
+                        **/
+                        setterDisabled = !setterDisabled
+                    }
+
+                    function setRoundDuration(ms){
+                        if(!setterDisabled){
+                            /**When setting the ms value via console this setter is called. This setter
+                              changes the value of the slider which results in a call of "onValueChanged".
+                              As explained above, that function results in a call of this setter again.
+                              Therefore we break the cycle by disabling the callback "onValueChanged" for
+                              this value change.
+                            **/
+                            callbackDisabled = true
+                            value = invTransferFunc(ms)
+                            callbackDisabled = false
+                            roundDurationText.text = ms + " ms"
+                        }
+                    }
+
+
+                    function transferFunc(val){
+
+                        var ms;
+                        var b = Math.pow(0.2, 1/49)
+                        var a = 100 * Math.pow(5, 1/49)
+                        if( val >= 50){
+                            ms = -0.4*val + 40
+                        } else {
+                            ms = a*Math.pow(b, val)
+                        }
+                        return Math.round(ms)
+                    }
+
+                    function invTransferFunc(ms){
+                        var val;
+                        var a = 100 * Math.pow(5, 1/49)
+                        if( ms <= 20 ){
+                            val = -2.5*ms + 100
+                        } else {
+                            val = (49/Math.log(5))*Math.log(a/ms)
+                        }
+
+                        return val
+                    }
+            Text {
+                 id: roundDurationText
+                 text: durationSlider.transferFunc(50) + " ms"
+                 anchors.bottom: durationSlider.top
+                 anchors.bottomMargin: 10
+                 color: "white"
+            }
 
         }
 
-       /* property int ui_state: 0
-        Keys.onPressed {
 
-            if(event.key == Qt.Key_B && event.key == Qt.Key_Control){
-                roundDurationSlider.visible = false
-            }
 
-            if(ui_state > 1){
-                ui_state = 0
-            }
-        }*/
 
 }
+

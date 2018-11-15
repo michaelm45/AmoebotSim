@@ -12,9 +12,9 @@
 class Node {
  public:
   // Node constructors. The default constructor makes the origin node (0, 0),
-  // the second constructs a node (x, y), and the third copies the input node.
+  // the second constructs a node (x, y, z), and the third copies the input node.
   Node();
-  Node(int x, int y);
+  Node(int x, int y, int z);
   Node(const Node& other);
 
   // Equality operators; == returns true if the two nodes are equal and != does
@@ -26,7 +26,7 @@ class Node {
   // more information on global directions, see localparticle.h.
   Node nodeInDir(int dir) const;
 
-  int x, y;
+  int x, y, z;
 };
 
 // Comparator between two nodes. First compares the nodes' x-coordinates and, in
@@ -35,16 +35,16 @@ bool operator<(const Node& v1, const Node& v2);
 
 
 inline Node::Node()
-  : x(0), y(0) {}
+  : x(0), y(0), z(0){}
 
-inline Node::Node(int x, int y)
-  : x(x), y(y) {}
+inline Node::Node(int x, int y, int z)
+  : x(x), y(y), z(z) {}
 
 inline Node::Node(const Node& other)
-  : x(other.x), y(other.y) {}
+  : x(other.x), y(other.y), z(other.z) {}
 
 inline bool Node::operator==(const Node& other) const {
-  return (x == other.x) && (y == other.y);
+  return (x == other.x) && (y == other.y) && (z == other.z);
 }
 
 inline bool Node::operator!=(const Node& other) const {
