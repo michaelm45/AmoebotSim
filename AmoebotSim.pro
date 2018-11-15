@@ -22,5 +22,3 @@ HEADERS += \
 
 DISTFILES += \
     examples.pri \
-
-disp("a" + a)
