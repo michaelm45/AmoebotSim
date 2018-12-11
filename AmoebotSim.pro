@@ -1,24 +1,14 @@
-!include( ../amoebotsim/examples.pri ) {
-    error( "Couldn't find the examples.pri file!" )
-}
-
 QT += 3dcore 3drender 3dinput 3dquick 3dlogic qml quick 3dquickextras widgets
 
 SOURCES += \
     main/main.cpp
 
-OTHER_FILES += \
-    main.qml
-
-
-RESOURCES += \
-    simple-qml.qrc \
+OTHER_FILES +=
 
 HEADERS += \
-    backend.h \
-    sim/node.h \
-    sim/particle.h \
-    sim/particle.cpp
+    sim/vis_simulator.h
 
-DISTFILES += \
-    examples.pri \
+DISTFILES +=
+
+RESOURCES += \
+    main/qml.qrc

@@ -48,23 +48,23 @@
 **
 ****************************************************************************/
 
-#include <Qt3DQuickExtras/qt3dquickwindow.h>
-#include <QGuiApplication>
-#include <QQuickView>
-#include <QDir>
-#include "sim/vis_simulator.h"
+import Qt3D.Core 2.0
 
+import Qt3D.Render 2.0
+import Qt3D.Input 2.0
+import Qt3D.Extras 2.0
+import QtQuick.Layouts 1.11
+import QtQuick.Window 2.2
+import QtQuick.Scene3D 2.0
+import QtQuick.Controls 2.0
+import QtQuick 2.6
 
-int main(int argc, char* argv[])
-{
+// Renders a 3D GUI scene for the particle system
+// Creates entity that will hold particle system
 
-    qmlRegisterType<Vis_Simulator>("Vis_Simulator", 1, 0, "Vis_Simulator");
-    QGuiApplication app(argc, argv);
-    QQuickView view;
-    view.resize(500, 500);
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setSource(QUrl("qrc:/main.qml"));
-    view.show();
+Item {
 
-    return app.exec();
+    Simulator { }
 }
+
+
