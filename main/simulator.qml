@@ -10,6 +10,7 @@ import QtQuick.Controls 2.0
 import QtQuick 2.6
 import Vis_Simulator 1.0
 
+
 Entity {
 
     // Define the camera and its movements
@@ -33,18 +34,25 @@ Entity {
         RenderSettings {
             activeFrameGraph: ForwardRenderer {
             camera: camera
-            clearColor: Qt.rgba(0, 0.5, 1, .5)
+            clearColor: Qt.rgba(0, 0.5, 1, 1)
             }
         },
         InputSettings { }
     ]
 
     Vis_Simulator {
-        id: vis_simulator
+        id: sim
     }
 
+    // creates a systems within the simulator
     System {
         id: systemLink
+        modelListing: sim.model
     }
+
+    Component.onCompleted: {
+        console.log(sim.model)
+    }
+
 }
 

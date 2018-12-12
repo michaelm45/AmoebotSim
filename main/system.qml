@@ -10,10 +10,11 @@ import QtQuick.Scene3D 2.0
 
 Entity {
 
-    property var modelListing: [Qt.vector3d(0,0,0), Qt.vector3d(1,1,1)]
+    property var modelListing: []
     NodeInstantiator {
         id: nodes
         model : modelListing
-        Particle {}
+        delegate: Particle {}
     }
+
 }

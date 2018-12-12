@@ -9,22 +9,30 @@ import QtQuick.Controls 2.0
 import QtQuick 2.6
 
 Entity {
-
+    property var location: model.modelData
+    // defines the position of particle rendering
     Transform {
         id: sphereTransformer
-        translation: Qt.vector3d(0, 0, 0)
+        translation: location
     }
 
+    // defines the metalic material
     PhongMaterial {
         id: material
     }
 
+    // defines how the particle is rendered
     SphereMesh {
         id: sphereMesh
         slices: 60
         rings: 60
         radius: 0.65
     }
+
+    // defines all the components of a particle
     components: [ sphereTransformer, sphereMesh, material ]
+    Component.onCompleted: {
+        console.log(location)
+    }
 
 }

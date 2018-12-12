@@ -62,7 +62,11 @@ import QtQuick 2.6
 // Renders a 3D GUI scene for the particle system
 // Creates entity that will hold particle system
 
-Item {
+Scene3D {
+    anchors.fill: parent
+    focus: true
+    aspects: ["input", "logic"]
+    cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
 
     Simulator { }
 }
