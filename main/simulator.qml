@@ -50,9 +50,7 @@ Entity {
         modelListing: sim.model
     }
 
-    Component.onCompleted: {
-        console.log(sim.model)
-    }
+
 
 }
 

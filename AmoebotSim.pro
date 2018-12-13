@@ -11,7 +11,6 @@ OTHER_FILES +=
 HEADERS += \
     sim/vis_simulator.h \
     core/particle.h \
-    core/simulator.h \
     core/system.h \
     core/node.h
 
@@ -19,3 +18,5 @@ DISTFILES +=
 
 RESOURCES += \
     main/qml.qrc
+
+
