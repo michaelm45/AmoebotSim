@@ -4,17 +4,21 @@ import QtQuick 2.6
 
 Entity {
   property var properties
-  property vector3d head_location: properties[0]
-  property vector3d tail_location: properties[1]
+  property vector3d headLocation: properties[0]
+  property vector3d tailLocation: properties[1]
 
+  // Render the head node.
   QConParticle {
-    id: head
-    location: head_location
+    location: headLocation
   }
 
-  Entity {
-    id: link
+  // Render the tail node.
+  QConParticle {
+    location: tailLocation
+  }
 
+  // Render the cylinder connecting the head and tail nodes.
+  Entity {
     CylinderMesh {
       id: mesh
       radius: .5
@@ -25,21 +29,15 @@ Entity {
 
     Transform {
       id: transform
-      translation: Qt.vector3d((head_location.x + tail_location.x) / 2.0,
-                               (head_location.y + tail_location.y) / 2.0,
-                               (head_location.z + tail_location.z) / 2.0)
+      translation: Qt.vector3d((headLocation.x + tailLocation.x) / 2.0,
+                               (headLocation.y + tailLocation.y) / 2.0,
+                               (headLocation.z + tailLocation.z) / 2.0)
     }
 
     PhongMaterial {
       id: material
     }
 
-    components: [ mesh, material, transform ]
+    components: [mesh, material, transform]
   }
-
-  QConParticle {
-    id: tail
-    location: tail_location
-  }
-
 }

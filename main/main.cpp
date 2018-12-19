@@ -48,7 +48,6 @@
 **
 ****************************************************************************/
 
-#include <Qt3DQuickExtras/qt3dquickwindow.h>
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlContext>
@@ -56,12 +55,11 @@
 #include "interface/simulator.h"
 
 int main(int argc, char* argv[]) {
-
-  Simulator _sim;
+  Simulator sim;
 
   QGuiApplication app(argc, argv);
   QQuickView view;
-  view.rootContext()->setContextProperty("sim", &_sim);
+  view.rootContext()->setContextProperty("sim", &sim);
   view.resize(500, 500);
   view.setResizeMode(QQuickView::SizeRootObjectToView);
   view.setSource(QUrl("qrc:///qml/main.qml"));

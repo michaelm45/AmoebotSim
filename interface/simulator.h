@@ -7,12 +7,8 @@
 
 #include <QList>
 #include <QObject>
-#include <QString>
-#include <QVector3D>
 
 #include "core/system.h"
-
-using namespace std;
 
 class Simulator : public QObject {
   Q_OBJECT
@@ -22,16 +18,15 @@ class Simulator : public QObject {
   void modelSignal();
 
  public:
+  // Default constructor (currently creates a System shared pointer).
   Simulator();
 
-  // Function to return the vector of all particle locations in a system to QML
-  // in face-centered cubic lattice coordinates.
+  // Returns the list of all particle locations in the system in Cartesian
+  // coordinates. Primarily used by QML rendering.
   QList<QVariant> getModel() const;
 
  private:
-  // Maintains a shared pointer to the system
   std::shared_ptr<System> _system;
 };
-
 
 #endif  // AMOEBOTSIM_INTERFACE_SIMULATOR_H_

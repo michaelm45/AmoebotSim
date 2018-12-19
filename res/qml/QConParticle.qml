@@ -10,10 +10,6 @@ Entity {
     translation: location
   }
 
-  PhongMaterial {
-    id: material
-  }
-
   SphereMesh {
     id: sphereMesh
     slices: 60
@@ -21,5 +17,9 @@ Entity {
     radius: 0.65
   }
 
-  components: [ sphereTransformer, sphereMesh, material ]
+  PhongMaterial {
+    id: material
+  }
+
+  components: [sphereTransformer, sphereMesh, material]
 }
