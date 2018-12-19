@@ -4,19 +4,17 @@ SOURCES += \
     main/main.cpp \
     core/system.cpp \
     core/particle.cpp \
-    interface/simulator.cpp
-
-OTHER_FILES +=
+    interface/simulator.cpp \
+    helper/randomnumbergenerator.cpp
 
 HEADERS += \
     core/particle.h \
     core/system.h \
     core/node.h \
-    interface/simulator.h
-
-DISTFILES +=
+    interface/simulator.h \
+    helper/randomnumbergenerator.h
 
 RESOURCES += \
-    main/qml.qrc
+    res/qml.qrc
 
-
+OTHER_FILES +=

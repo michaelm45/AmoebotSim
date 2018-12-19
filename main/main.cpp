@@ -57,7 +57,6 @@
 #include "interface/simulator.h"
 
 int main(int argc, char* argv[]) {
-
   Simulator _sim;
 
   QGuiApplication app(argc, argv);
@@ -65,7 +64,7 @@ int main(int argc, char* argv[]) {
   view.rootContext()->setContextProperty("sim", &_sim);
   view.resize(500, 500);
   view.setResizeMode(QQuickView::SizeRootObjectToView);
-  view.setSource(QUrl("qrc:/main.qml"));
+  view.setSource(QUrl("qrc:///qml/main.qml"));
   view.show();
 
   return app.exec();

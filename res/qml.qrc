@@ -1,9 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/A_Button.qml</file>
-        <file>qml/A_Inspector.qml</file>
-        <file>qml/A_ResultTextField.qml</file>
-        <file>qml/A_TextField.qml</file>
         <file>qml/main.qml</file>
+        <file>qml/QConParticle.qml</file>
+        <file>qml/QParticle.qml</file>
+        <file>qml/QSimulator.qml</file>
+        <file>qml/QSystem.qml</file>
+        <file>qml/QExpParticle.qml</file>
     </qresource>
 </RCC>
