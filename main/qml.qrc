@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Contracted.qml</file>
-        <file>Particle.qml</file>
-        <file>Simulator.qml</file>
-        <file>System.qml</file>
-        <file>Expanded.qml</file>
+        <file>QConParticle.qml</file>
+        <file>QParticle.qml</file>
+        <file>QSimulator.qml</file>
+        <file>QSystem.qml</file>
+        <file>QExpParticle.qml</file>
     </qresource>
 </RCC>

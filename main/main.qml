@@ -63,12 +63,10 @@ import QtQuick 2.6
 // Creates entity that will hold particle system
 
 Scene3D {
-    anchors.fill: parent
-    focus: true
-    aspects: ["input", "logic"]
-    cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
+  anchors.fill: parent
+  focus: true
+  aspects: ["input", "logic"]
+  cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
 
-    Simulator { }
+  QSimulator {}
 }
-
-

@@ -52,19 +52,18 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QDir>
-#include "sim/vis_simulator.h"
 
+#include "interface/simulator.h"
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
+  qmlRegisterType<Simulator>("Simulator", 1, 0, "Simulator");
 
-    qmlRegisterType<Vis_Simulator>("Vis_Simulator", 1, 0, "Vis_Simulator");
-    QGuiApplication app(argc, argv);
-    QQuickView view;
-    view.resize(500, 500);
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setSource(QUrl("qrc:/main.qml"));
-    view.show();
+  QGuiApplication app(argc, argv);
+  QQuickView view;
+  view.resize(500, 500);
+  view.setResizeMode(QQuickView::SizeRootObjectToView);
+  view.setSource(QUrl("qrc:/main.qml"));
+  view.show();
 
-    return app.exec();
+  return app.exec();
 }
