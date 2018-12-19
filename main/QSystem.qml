@@ -8,7 +8,7 @@ import QtQuick.Scene2D 2.9
 import QtQuick.Scene3D 2.0
 
 Entity {
-  property var modelListing: []
+  property var modelListing
 
   NodeInstantiator {
     id: nodes

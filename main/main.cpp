@@ -52,14 +52,17 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QDir>
+#include <QQmlContext>
 
 #include "interface/simulator.h"
 
 int main(int argc, char* argv[]) {
-  qmlRegisterType<Simulator>("Simulator", 1, 0, "Simulator");
+
+  Simulator _sim;
 
   QGuiApplication app(argc, argv);
   QQuickView view;
+  view.rootContext()->setContextProperty("sim", &_sim);
   view.resize(500, 500);
   view.setResizeMode(QQuickView::SizeRootObjectToView);
   view.setSource(QUrl("qrc:/main.qml"));

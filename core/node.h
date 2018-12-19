@@ -21,6 +21,8 @@ class Node {
   // the opposite.
   bool operator==(const Node& other) const;
   bool operator!=(const Node& other) const;
+  Node nodeInDir(int dir) const;
+
 
   int x, y, z;
 };
@@ -41,6 +43,17 @@ inline bool Node::operator==(const Node& other) const {
 inline bool Node::operator!=(const Node& other) const {
   return !operator==(other);
 }
+inline Node Node::nodeInDir(int dir) const {
+  // if particles is contracted, the head and tail are at the same position.
+  if(dir == -1){ return Node(x, y, z); }
+
+  static constexpr std::array<int, 12> xOffset = {{1,  1,  0,  -1,  -1,  0,  1,  0,  -1, -1,    0,   0}};
+  static constexpr std::array<int, 12> yOffset = {{0, -1,  -1,  0,   1,  1,  0,  -1,  1,  0,   -1,   1}};
+  static constexpr std::array<int, 12> zOffset = {{0,  0,  0,   0,   0,  0,  1,  1,   1,  -1,  -1,  -1}};
+
+  return Node(x + xOffset[dir], y + yOffset[dir], z + zOffset[dir]);
+}
+
 
 
 #endif  // AMOEBOTSIM_SIM_NODE_H

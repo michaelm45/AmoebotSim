@@ -5,7 +5,7 @@
 Particle::Particle(const Node& head, int globalTailDir)
   : head(head),
     globalTailDir(globalTailDir) {
-  Q_ASSERT(-1 <= globalTailDir && globalTailDir < 6);
+  Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
 }
 
 bool Particle::isContracted() const {
@@ -15,14 +15,14 @@ bool Particle::isContracted() const {
 bool Particle::isExpanded() const {
   return !isContracted();
 }
-/*
+
 Node Particle::tail() const {
-  Q_ASSERT(isExpanded());
-  Q_ASSERT(-1 <= globalTailDir && globalTailDir < 6);
+
+  Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
 
   return head.nodeInDir(globalTailDir);
 }
-*/
+
 int Particle::headMarkColor() const {
   return -1;
 }

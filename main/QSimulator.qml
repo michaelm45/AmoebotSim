@@ -8,9 +8,10 @@ import QtQuick.Window 2.2
 import QtQuick.Scene3D 2.0
 import QtQuick.Controls 2.0
 import QtQuick 2.6
-import Simulator 1.0
+
 
 Entity {
+
   // Define the camera and its movements
   Camera {
     id: camera
@@ -37,10 +38,6 @@ Entity {
     },
     InputSettings { }
   ]
-
-  Simulator {
-    id: sim
-  }
 
   // creates a systems within the simulator
   QSystem {

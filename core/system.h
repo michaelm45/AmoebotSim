@@ -10,6 +10,7 @@
 class System {
  public:
   System();
+  std::vector<Particle> getParticles();
 
  private:
   std::vector<Particle> _particles;

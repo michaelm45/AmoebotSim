@@ -9,7 +9,6 @@
 #include <QObject>
 #include <QString>
 #include <QVector3D>
-
 #include "core/system.h"
 
 using namespace std;
@@ -32,5 +31,6 @@ class Simulator : public QObject {
  private:
   std::shared_ptr<System> _system;
 };
+
 
 #endif  // AMOEBOTSIM_INTERFACE_SIMULATOR_H_

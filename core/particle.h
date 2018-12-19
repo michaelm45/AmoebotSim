@@ -23,7 +23,7 @@ class Particle {
   // Returns the node occupied by the particle's tail. Fails if the particle is
   // contracted; consider using isExpanded() first if unsure.
 
-  //Node tail() const;
+  Node tail() const;
 
   // Functions for altering the particle's cosmetic appearance. headMarkColor
   // (respectively, tailMarkColor) returns the color to be used for the ring
