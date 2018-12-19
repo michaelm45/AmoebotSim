@@ -5,14 +5,16 @@ SOURCES += \
     core/system.cpp \
     core/particle.cpp \
     interface/simulator.cpp \
-    helper/randomnumbergenerator.cpp
+    helper/randomnumbergenerator.cpp \
+    helper/conversion.cpp
 
 HEADERS += \
     core/particle.h \
     core/system.h \
     core/node.h \
     interface/simulator.h \
-    helper/randomnumbergenerator.h
+    helper/randomnumbergenerator.h \
+    helper/conversion.h
 
 RESOURCES += \
     res/qml.qrc

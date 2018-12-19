@@ -1,4 +1,4 @@
-// TODO: class comment.
+// Defines a simulator used as an interface between C++ and QML objects.
 
 #ifndef AMOEBOTSIM_INTERFACE_SIMULATOR_H_
 #define AMOEBOTSIM_INTERFACE_SIMULATOR_H_
@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QString>
 #include <QVector3D>
+
 #include "core/system.h"
 
 using namespace std;
@@ -16,19 +17,19 @@ using namespace std;
 class Simulator : public QObject {
   Q_OBJECT
   Q_PROPERTY(QList<QVariant> model READ getModel NOTIFY modelSignal)
-  //pass the model as QVariant(QList<QList<QVariant(QList = {vec3d head, vec3d tail, color, etc.}) >>)
 
  signals:
   void modelSignal();
 
  public:
-  // TODO: constructor documentation.
   Simulator();
 
-  // TODO: documentation.
+  // Function to return the vector of all particle locations in a system to QML
+  // in face-centered cubic lattice coordinates.
   QList<QVariant> getModel() const;
 
  private:
+  // Maintains a shared pointer to the system
   std::shared_ptr<System> _system;
 };
 

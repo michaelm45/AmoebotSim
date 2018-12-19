@@ -1,4 +1,4 @@
-// Defines a base particle system and its iterators, primarily serving the
+// Defines a base particle system serving the
 // purpose of defining functions to be overridden by subclasses.
 
 #ifndef AMOEBOTSIM_CORE_SYSTEM_H_

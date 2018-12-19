@@ -51,12 +51,12 @@
 #include <Qt3DQuickExtras/qt3dquickwindow.h>
 #include <QGuiApplication>
 #include <QQuickView>
-#include <QDir>
 #include <QQmlContext>
 
 #include "interface/simulator.h"
 
 int main(int argc, char* argv[]) {
+
   Simulator _sim;
 
   QGuiApplication app(argc, argv);

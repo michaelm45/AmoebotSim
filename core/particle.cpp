@@ -1,12 +1,13 @@
-#include <QtGlobal>
-
 #include "core/particle.h"
+#include "helper/conversion.h"
 
 Particle::Particle(const Node& head, int globalTailDir)
   : head(head),
     globalTailDir(globalTailDir) {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
 }
+
+Particle::~Particle(){}
 
 bool Particle::isContracted() const {
   return (globalTailDir == -1);
@@ -17,10 +18,14 @@ bool Particle::isExpanded() const {
 }
 
 Node Particle::tail() const {
-
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
-
-  return head.nodeInDir(globalTailDir);
+  if(isContracted()){
+    return head;
+  }
+  else {
+    unsigned direction = Conversion::signed_to_unsignedInt(globalTailDir);
+    return head.nodeInDir(direction);
+  }
 }
 
 int Particle::headMarkColor() const {
@@ -37,20 +42,6 @@ int Particle::tailMarkColor() const {
 
 int Particle::tailMarkGlobalDir() const {
   return -1;
-}
-
-std::array<int, 18> Particle::borderColors() const {
-  std::array<int, 18> borderColors;
-  borderColors.fill(-1);
-
-  return borderColors;
-}
-
-std::array<int, 6> Particle::borderPointColors() const {
-  std::array<int, 6> borderPointColors;
-  borderPointColors.fill(-1);
-
-  return borderPointColors;
 }
 
 QString Particle::inspectionText() const {
