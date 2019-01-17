@@ -7,6 +7,7 @@
 
 #include <QtGlobal>
 
+// commit
 class Node {
  public:
   // Node constructors. The default constructor makes the origin node (0, 0, 0),
