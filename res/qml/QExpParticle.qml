@@ -8,16 +8,21 @@ Entity {
   property vector3d tailLocation: properties[1]
   property var headColor: properties[2]
   property var tailColor: properties[3]
+  property vector3d headMark: properties[4]
+  property vector3d tailMark: properties[5]
+
 
   // Render the head node.
   QConParticle {
     location: headLocation
     color: headColor
+    mark: headMark
   }
 
   // Render the tail node.
   QConParticle {
     location: tailLocation
+    mark: tailMark
     color: tailColor
   }
 

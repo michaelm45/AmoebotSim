@@ -44,12 +44,9 @@ inline bool Node::operator!=(const Node& other) const {
 }
 
 inline Node Node::nodeInDir(uint dir) const {
-  static constexpr std::array<int, 12> xOffset = {{1, 1, 0, -1, -1, 0, 1, 0, -1,
-                                                   -1, 0, 0}};
-  static constexpr std::array<int, 12> yOffset = {{0, -1, -1, 0, 1, 1, 0, -1, 1,
-                                                   0, -1, 1}};
-  static constexpr std::array<int, 12> zOffset = {{0, 0, 0, 0, 0, 0, 1, 1, 1,
-                                                   -1, -1, -1}};
+  static constexpr std::array<int, 12> xOffset = {{1, 1, -1, -1, -1, 0, 1, 0, -1, 0, 1, 0}};
+  static constexpr std::array<int, 12> yOffset = {{1, -1, 1, -1, 0, 1, 0, -1, 0, 1, 0, -1}};
+  static constexpr std::array<int, 12> zOffset = {{0, 0, 0, 0, 1, 1, 1, 1, -1, -1, -1, -1}};
 
   return Node(x + xOffset[dir], y + yOffset[dir], z + zOffset[dir]);
 }

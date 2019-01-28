@@ -27,6 +27,7 @@ class Simulator : public QObject {
 
  private:
   std::shared_ptr<System> _system;
+  std::vector<double> markerCalculation(int dir, Node marked) const;
 };
 
 #endif  // AMOEBOTSIM_INTERFACE_SIMULATOR_H_

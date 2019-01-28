@@ -17,14 +17,30 @@ QList<QVariant> Simulator::getModel() const {
   for (Particle p : particles) {
     Node head = p.head;
     Node tail = p.tail();
+    std::vector<double> headMarker = markerCalculation(p.globalHeadMarkDir(), head);
+    std::vector<double> tailMarker = markerCalculation(p.globalTailMarkDir(), tail);
 
     QVariant particle = QVariant({QVector3D(head.x, head.y, head.z),
                                   QVector3D(tail.x, tail.y, tail.z),
                                   QColor::fromRgb(Conversion::intToUInt(p.headMarkColor())),
-                                  QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()))});
+                                  QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor())),
+                                  QVector3D(headMarker[0], headMarker[1], headMarker[2]),
+                                  QVector3D(tailMarker[0], tailMarker[1], tailMarker[2])});
 
     renderingVec.push_back(particle);
   }
 
   return renderingVec;
 }
+std::vector<double> Simulator::markerCalculation(int dir, Node marked) const{
+  if(dir != -1){
+    Node target = marked.nodeInDir(dir);
+    return {.25 * (marked.x - target.x),
+            .25 * (marked.y - target.y),
+           .25 * (marked.z - target.z)};
+  }
+  else{
+    return {0,0,0};
+  }
+}
+

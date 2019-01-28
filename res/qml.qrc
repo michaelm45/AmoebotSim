@@ -6,5 +6,6 @@
         <file>qml/QSimulator.qml</file>
         <file>qml/QSystem.qml</file>
         <file>qml/QExpParticle.qml</file>
+        <file>qml/QMarker.qml</file>
     </qresource>
 </RCC>
