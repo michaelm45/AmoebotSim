@@ -11,6 +11,13 @@ Entity {
   property vector3d headMark: properties[4]
   property vector3d tailMark: properties[5]
 
+  property int dX: (headLocation.x - tailLocation.x)
+  property int dY: (headLocation.y - tailLocation.y)
+  property int dZ: (headLocation.z - tailLocation.z)
+
+  property real yaw: Math.tan(dX/2,dY/2)
+  property real pitch: Math.tan(dX/2,dZ/2)
+
   // Render the head node.
   QConParticle {
     location: headLocation
@@ -40,6 +47,13 @@ Entity {
       translation: Qt.vector3d((headLocation.x + tailLocation.x) / 2.0,
                                (headLocation.y + tailLocation.y) / 2.0,
                                (headLocation.z + tailLocation.z) / 2.0)
+
+      Component.onCompleted:  {
+          console.log("pitch " + pitch)
+          console.log("yaw " + yaw)
+          console.log(fromEulerAngles(pitch,yaw,0))
+      }
+      //Rotation: fromEulerAngles(pitch, yaw, 0)
     }
 
     PhongMaterial {
