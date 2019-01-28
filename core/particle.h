@@ -24,6 +24,9 @@ class Particle {
   // from the head node.
   Node tail() const;
 
+  virtual int globalHeadMarkDir() const;
+  virtual int globalTailMarkDir() const;
+
   Node head;
   int globalTailDir;
 };

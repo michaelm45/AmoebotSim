@@ -26,3 +26,13 @@ Node Particle::tail() const {
     return head.nodeInDir(Conversion::intToUInt(globalTailDir));
   }
 }
+
+int Particle::globalHeadMarkDir() const{
+  return -1;
+}
+
+int Particle::globalTailMarkDir() const{
+  return -1;
+}
+
+
