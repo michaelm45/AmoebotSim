@@ -1,4 +1,5 @@
 #include <QVector3D>
+#include <QColor>
 
 #include "interface/simulator.h"
 
@@ -17,7 +18,9 @@ QList<QVariant> Simulator::getModel() const {
     Node tail = p.tail();
 
     renderingVec.push_back(QVariant({QVector3D(head.x, head.y, head.z),
-                                     QVector3D(tail.x, tail.y, tail.z)}));
+                                     QVector3D(tail.x, tail.y, tail.z),
+                                     QColor::fromRgb(p.headMarkColor()),
+                                     QColor::fromRgb(p.tailMarkColor())}));
   }
 
   return renderingVec;

@@ -19,6 +19,11 @@ class Particle {
   bool isContracted() const;
   bool isExpanded() const;
 
+  // Functions to give color to the head and tail of particles. Colors set by
+  // hex RGB values.
+  int virtual headMarkColor() const;
+  int virtual tailMarkColor() const;
+
   // Returns the node occupied by the particle's tail. Returns the head node if
   // contracted, and otherwise returns the node in the global tail direction
   // from the head node.
