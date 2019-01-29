@@ -15,8 +15,9 @@ Entity {
   property int dY: (headLocation.y - tailLocation.y)
   property int dZ: (headLocation.z - tailLocation.z)
 
-  property real yaw: Math.atan(dX/2,dY/2) * 180 / Math.PI
-  property real pitch: Math.atan(dY/2,dZ/2) * 180 / Math.PI
+  property real yaw: (dY ==0) ? 0 : Math.atan(dX,dY) * 180 / Math.PI
+  property real pitch: (dZ == 0) ? 0 : Math.atan(dY,dZ) * 180 / Math.PI
+
 
   // Render the head node.
   QConParticle {
@@ -49,11 +50,14 @@ Entity {
                                (headLocation.z + tailLocation.z) / 2.0)
 
       Component.onCompleted:  {
+          console.log(headLocation + " " + tailLocation)
           console.log("pitch " + pitch)
           console.log("yaw " + yaw)
       }
-      rotationZ: yaw
+
       rotationX: pitch
+      rotationZ: yaw
+
     }
 
     PhongMaterial {
