@@ -15,8 +15,8 @@ Entity {
   property int dY: (headLocation.y - tailLocation.y)
   property int dZ: (headLocation.z - tailLocation.z)
 
-  property real yaw: Math.tan(dX/2,dY/2)
-  property real pitch: Math.tan(dX/2,dZ/2)
+  property real yaw: Math.atan(dX/2,dY/2) * 180 / Math.PI
+  property real pitch: Math.atan(dY/2,dZ/2) * 180 / Math.PI
 
   // Render the head node.
   QConParticle {
@@ -51,9 +51,9 @@ Entity {
       Component.onCompleted:  {
           console.log("pitch " + pitch)
           console.log("yaw " + yaw)
-          console.log(fromEulerAngles(pitch,yaw,0))
       }
-      //Rotation: fromEulerAngles(pitch, yaw, 0)
+      rotationZ: yaw
+      rotationX: pitch
     }
 
     PhongMaterial {
