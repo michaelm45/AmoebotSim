@@ -15,7 +15,7 @@ Entity {
   property int dY: (headLocation.y - tailLocation.y)
   property int dZ: (headLocation.z - tailLocation.z)
 
-  property real yaw: (dY ==0) ? 0 : Math.atan(dX,dY) * 180 / Math.PI
+  property real yaw: (dY == 0) ? 0 : Math.atan(dX,dY) * 180 / Math.PI
   property real pitch: (dZ == 0) ? 0 : Math.atan(dY,dZ) * 180 / Math.PI
 
 
@@ -48,12 +48,6 @@ Entity {
       translation: Qt.vector3d((headLocation.x + tailLocation.x) / 2.0,
                                (headLocation.y + tailLocation.y) / 2.0,
                                (headLocation.z + tailLocation.z) / 2.0)
-
-      Component.onCompleted:  {
-          console.log(headLocation + " " + tailLocation)
-          console.log("pitch " + pitch)
-          console.log("yaw " + yaw)
-      }
 
       rotationX: pitch
       rotationZ: yaw
