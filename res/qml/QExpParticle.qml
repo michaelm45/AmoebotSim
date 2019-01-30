@@ -45,13 +45,9 @@ Entity {
 
     Transform {
       id: transform
-      translation: Qt.vector3d((headLocation.x + tailLocation.x) / 2.0,
-                               (headLocation.y + tailLocation.y) / 2.0,
-                               (headLocation.z + tailLocation.z) / 2.0)
-
+      translation: Qt.vector3d(dX / 2.0, dY / 2.0, dZ / 2.0)
       rotationX: pitch
       rotationZ: yaw
-
     }
 
     PhongMaterial {
