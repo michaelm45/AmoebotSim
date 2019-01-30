@@ -2,6 +2,7 @@
 #include <QColor>
 
 #include "interface/simulator.h"
+#include "helper/conversion.h"
 
 Simulator::Simulator() {
   _system = std::make_shared<System>();
@@ -17,10 +18,12 @@ QList<QVariant> Simulator::getModel() const {
     Node head = p.head;
     Node tail = p.tail();
 
-    renderingVec.push_back(QVariant({QVector3D(head.x, head.y, head.z),
-                                     QVector3D(tail.x, tail.y, tail.z),
-                                     QColor::fromRgb(p.headMarkColor()),
-                                     QColor::fromRgb(p.tailMarkColor())}));
+    QVariant particle = QVariant({QVector3D(head.x, head.y, head.z),
+                                  QVector3D(tail.x, tail.y, tail.z),
+                                  QColor::fromRgb(Conversion::intToUInt(p.headMarkColor())),
+                                  QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()))});
+
+    renderingVec.push_back(particle);
   }
 
   return renderingVec;
