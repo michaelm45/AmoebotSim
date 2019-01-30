@@ -28,9 +28,9 @@ Node Particle::tail() const {
 }
 
 int Particle::headMarkColor() const {
-  return -1;
+  return 1;
 }
 
 int Particle::tailMarkColor() const {
-  return -1;
+  return 1;
 }
