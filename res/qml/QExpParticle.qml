@@ -15,9 +15,10 @@ Entity {
   property int dY: (headLocation.y - tailLocation.y)
   property int dZ: (headLocation.z - tailLocation.z)
 
-  property real yaw: (dY == 0) ? 0 : Math.atan(dX,dY) * 180 / Math.PI
-  property real pitch: (dZ == 0) ? 0 : Math.atan(dY,dZ) * 180 / Math.PI
-
+  // Calculating x,y,z rotation of cylinders
+  property real zRot: (dY == 0) ? 0 : Math.atan(dX,dY) * 180 / Math.PI
+  property real xRot: (dZ == 0) ? 0 : Math.atan(dY,dZ) * 180 / Math.PI
+  property real yRot: (dX == 0) ? 0 : Math.atan(dZ,dX) * 180 / Math.PI
 
   // Render the head node.
   QConParticle {
@@ -45,9 +46,13 @@ Entity {
 
     Transform {
       id: transform
-      translation: Qt.vector3d(dX / 2.0, dY / 2.0, dZ / 2.0)
-      rotationX: pitch
-      rotationZ: yaw
+      translation: Qt.vector3d((headLocation.x + tailLocation.x) / 2.0,
+                               (headLocation.y + tailLocation.y) / 2.0,
+                               (headLocation.z + tailLocation.z) / 2.0)
+
+      rotationX: xRot
+      rotationZ: zRot
+      rotationY: yRot
     }
 
     PhongMaterial {
