@@ -27,7 +27,7 @@ Item {
               text: "Reset Camera"
               anchors.top: parent.top
               anchors.left: parent.left
-              onClicked: simulator.getCamera().resetPosition()
+              onClicked: simulator.resetCameraPosition()
           }
     }
 }

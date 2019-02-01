@@ -15,12 +15,6 @@ Entity {
     position: Qt.vector3d(0.0, 0.0, -40.0)
     upVector: Qt.vector3d(0.0, 1.0, 0.0)
     viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
-
-    function resetPosition(){
-        camera.position = Qt.vector3d(0.0, 0.0, -40.0)
-        camera.viewCenter = Qt.vector3d(0.0, 0.0, 0.0)
-        camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
-    }
   }
 
   OrbitCameraController {
@@ -42,8 +36,10 @@ Entity {
     modelListing: sim.model
   }
 
-  function getCamera(){
-      return camera;
+  function resetCameraPosition(){
+      camera.position = Qt.vector3d(0.0, 0.0, -40.0)
+      camera.viewCenter = Qt.vector3d(0.0, 0.0, 0.0)
+      camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
   }
 }
 
