@@ -36,10 +36,10 @@ Entity {
     modelListing: sim.model
   }
 
-  function resetCameraPosition(){
-      camera.position = Qt.vector3d(0.0, 0.0, -40.0)
-      camera.viewCenter = Qt.vector3d(0.0, 0.0, 0.0)
-      camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
+  function resetCameraPosition() {
+    camera.position = Qt.vector3d(0.0, 0.0, -40.0)
+    camera.viewCenter = Qt.vector3d(0.0, 0.0, 0.0)
+    camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
   }
 }
 

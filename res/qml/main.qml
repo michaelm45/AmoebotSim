@@ -5,29 +5,29 @@ import QtQuick.Controls 1.4
 
 Item {
 // Renders a 3D GUI scene for the particle system.
-    Scene3D {
-      anchors.fill: parent
-      focus: true
-      aspects: ["input", "logic"]
-      cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
+  Scene3D {
+    anchors.fill: parent
+    focus: true
+    aspects: ["input", "logic"]
+    cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
 
-      // Creates an entity that holds the particle system.
-      QSimulator {id: simulator}
-    }
+    // Creates an entity that holds the particle system.
+    QSimulator {id: simulator}
+  }
 
-    //Row Layout to contain UI elements
-    RowLayout {
-          //Layout Properties
-          width: parent.width
-          anchors.fill: parent
-          anchors.margins: 10
 
-          Button {
-              id: cameraResetButton
-              text: "Reset Camera"
-              anchors.top: parent.top
-              anchors.left: parent.left
-              onClicked: simulator.resetCameraPosition()
-          }
-    }
+  ColumnLayout {
+     anchors.right: parent.right
+     anchors.top: parent.top
+     anchors.bottom: parent.bottom
+     anchors.margins: 10
+
+     Button {
+       id: cameraResetButton
+       text: "Reset Camera"
+       anchors.bottom: parent.bottom
+       anchors.right: parent.right
+       onClicked: simulator.resetCameraPosition()
+     }
+  }
 }
