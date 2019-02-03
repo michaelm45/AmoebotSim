@@ -11,14 +11,15 @@ Entity {
   property vector3d headMark: properties[4]
   property vector3d tailMark: properties[5]
 
-  property int dX: (headLocation.x - tailLocation.x)
-  property int dY: (headLocation.y - tailLocation.y)
-  property int dZ: (headLocation.z - tailLocation.z)
+  property double dX: (headLocation.x - tailLocation.x)
+  property double dY: (headLocation.y - tailLocation.y)
+  property double dZ: (headLocation.z - tailLocation.z)
 
-  // Calculating x,y,z rotation of cylinders
-  property real zRot: (dY == 0) ? 0 : Math.atan(dX,dY) * 180 / Math.PI
-  property real xRot: (dZ == 0) ? 0 : Math.atan(dY,dZ) * 180 / Math.PI
-  property real yRot: (dX == 0) ? 0 : Math.atan(dZ,dX) * 180 / Math.PI
+  property double length: Math.sqrt(dX*dX + dY*dY + dZ*dZ)
+  property double length_xy: Math.sqrt(dX*dX + dZ*dZ)
+
+  property real yRot: Math.acos(dZ/length_xy) * 180 / Math.PI
+  property real xRot: Math.acos(dY/length) * 180 / Math.PI
 
   // Render the head node.
   QConParticle {
@@ -50,9 +51,9 @@ Entity {
                                (headLocation.y + tailLocation.y) / 2.0,
                                (headLocation.z + tailLocation.z) / 2.0)
 
-      rotationX: xRot
-      rotationZ: zRot
-      rotationY: yRot
+      rotation: fromAxesAndAngles(Qt.vector3d(1,0,0), xRot,
+                                        Qt.vector3d(0, (dX<0)?-1:1, 0), yRot)
+
     }
 
     PhongMaterial {
