@@ -31,6 +31,19 @@ Entity {
     InputSettings {}
   ]
 
+  Entity {
+    id: lightSource
+       components: [
+           PointLight {
+               color: "white"
+               intensity: 0.6
+           },
+           Transform {
+               translation: camera.position.plus(Qt.vector3d(0, -5, 0))
+           }
+       ]
+  }
+
   QSystem {
     id: systemLink
     modelListing: sim.model
