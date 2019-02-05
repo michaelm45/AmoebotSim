@@ -7,7 +7,6 @@ System::System() {
                 Particle(Node(3, 3, 3), 2),
                 Particle(Node(4, 4, 4), -1)};
 }
-
 std::vector<Particle> System::getParticles() {
   return _particles;
 }
