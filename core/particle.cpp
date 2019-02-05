@@ -19,7 +19,6 @@ bool Particle::isExpanded() const {
 
 Node Particle::tail() const {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
-
   if (isContracted()) {
     return head;
   } else {

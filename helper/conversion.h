@@ -8,6 +8,7 @@
 class Conversion {
  public:
   static uint intToUInt(int i);
+  static std::vector<double> cartesianPos(std::vector<int> latticePos);
 };
 
 #endif  // AMOEBOTSIM_HELPER_CONVERSION_H_
