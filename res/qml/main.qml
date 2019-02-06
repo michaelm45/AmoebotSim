@@ -25,8 +25,7 @@ Item {
      Button {
        id: cameraResetButton
        text: "Reset Camera"
-       anchors.bottom: parent.bottom
-       anchors.right: parent.right
+       Layout.alignment: Qt.AlignRight | Qt.AlignBottom
        onClicked: simulator.resetCameraPosition()
      }
   }

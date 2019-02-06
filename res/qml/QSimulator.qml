@@ -14,7 +14,7 @@ Entity {
     farPlane : 1000.0
     position: Qt.vector3d(0.0, 0.0, -40.0)
     upVector: Qt.vector3d(0.0, 1.0, 0.0)
-    viewCenter: Qt.vector3d(0.0, 0.0, 0.0)
+    viewCenter: centerOfMass(sim.model)
   }
 
   OrbitCameraController {
@@ -38,8 +38,24 @@ Entity {
 
   function resetCameraPosition() {
     camera.position = Qt.vector3d(0.0, 0.0, -40.0)
-    camera.viewCenter = Qt.vector3d(0.0, 0.0, 0.0)
     camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
+    camera.viewCenter = centerOfMass(sim.model)
+  }
+
+  function centerOfMass(model) {
+     var sumX = 0;
+     var sumY = 0;
+     var sumZ = 0;
+     for(var i = 0; i<model.length; i++) {
+         // Calculates the sum of head and tail locations of all particles
+         sumX = model[i][0].x + model[i][1].x
+         sumY = model[i][0].y + model[i][1].y
+         sumZ = model[i][0].z + model[i][1].z
+     }
+
+     // Returns the center of mass of all particles by taking average of sums.
+     return Qt.vector3d(sumX/(2 * model.length), sumY/(2 * model.length),
+                        sumZ/(2 * model.length))
   }
 }
 
