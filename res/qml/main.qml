@@ -17,16 +17,16 @@ Item {
 
 
   ColumnLayout {
-     anchors.right: parent.right
-     anchors.top: parent.top
-     anchors.bottom: parent.bottom
-     anchors.margins: 10
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.margins: 10
 
-     Button {
-       id: cameraResetButton
-       text: "Reset Camera"
-       Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-       onClicked: simulator.resetCameraPosition()
-     }
+    Button {
+      id: cameraResetButton
+      text: "Reset Camera"
+      Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+      onClicked: simulator.resetCameraPosition()
+    }
   }
 }
