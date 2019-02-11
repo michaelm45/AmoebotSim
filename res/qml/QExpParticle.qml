@@ -11,7 +11,6 @@ Entity {
   property vector3d headMark: properties[4]
   property vector3d tailMark: properties[5]
 
-
   // Render the head node.
   QConParticle {
     location: headLocation
