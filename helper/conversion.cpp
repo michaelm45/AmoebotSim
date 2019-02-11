@@ -15,11 +15,10 @@ std::vector<double> Conversion::cartesianPos(std::vector<int> latticePos) {
   int i =  latticePos[0];
   int j =  latticePos[1];
   int k =  latticePos[2];
-  int layer = k % 2;
 
-  double x = i + (j+layer)/2.0;
-  double y = (3*j + layer)/sqrt(12);
-  double z = k*sqrt(2.0/3);
+  double x = i + 1/2.0 * j + 1/2.0 * k;
+  double y = sqrt(3.0)/2.0 * j - sqrt(3.0)/4 * k;
+  double z = sqrt(6.0)/3 * k;
 
   return {x, y, z};
 }
