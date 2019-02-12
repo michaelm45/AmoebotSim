@@ -12,7 +12,10 @@ Entity {
     aspectRatio: 16/9
     nearPlane : 0.1
     farPlane : 1000.0
-    Component.onCompleted: resetCameraPosition()
+    position : Qt.vector3d(centerOfMass().x, minYPosition() - deltaY(),
+                           centerOfMass().z)
+    upVector : Qt.vector3d(0.0, 0.0, 1.0)
+    viewCenter : centerOfMass()
   }
 
   OrbitCameraController {
@@ -35,8 +38,9 @@ Entity {
   }
 
   function resetCameraPosition() {
-    camera.position = findCameraPosition()
-    camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
+    camera.position = Qt.vector3d(centerOfMass().x, minYPosition() - deltaY(),
+                                  centerOfMass().z)
+    camera.upVector = Qt.vector3d(0.0, 0.0, 1.0)
     camera.viewCenter = centerOfMass()
   }
 
@@ -47,39 +51,31 @@ Entity {
 
     for (var i = 0; i < sim.model.length; i++) {
       // Calculates the sum of head and tail locations of all particles
-      if(sim.model[i][0] === sim.model[i][1]) {
-        sumX = sim.model[i][0].x
-        sumY = sim.model[i][0].y
-        sumZ = sim.model[i][0].z
-      } else {
-        sumX = sim.model[i][0].x + sim.model[i][1].x
-        sumY = sim.model[i][0].y + sim.model[i][1].y
-        sumZ = sim.model[i][0].z + sim.model[i][1].z
-      }
-
+      sumX = sim.model[i][0].x + sim.model[i][1].x
+      sumY = sim.model[i][0].y + sim.model[i][1].y
+      sumZ = sim.model[i][0].z + sim.model[i][1].z
     }
 
      // Returns the center of mass of all particles by taking average of sums.
-     return Qt.vector3d(sumX / (2 * sim.model.length), sumY / (2 * sim.model.length),
+     return Qt.vector3d(sumX / (2 * sim.model.length),
+                        sumY / (2 * sim.model.length),
                         sumZ / (2 * sim.model.length))
   }
 
-  function findCameraPosition() {
-    var cameraLevel = camera.viewCenter
-    var closestNodeZ = 0
+  function minYPosition() {
+    var minYPos = Number.MAX_SAFE_INTEGER
 
     //Searches for the particle closest to the camera
     for (var i = 0; i < sim.model.length; i++) {
-
-      if (sim.model[i][1].z < closestNodeZ) {
-        closestNodeZ = sim.model[i][1].z
+     if (Math.min(sim.model[i][0].y, sim.model[i][1].y)  < minYPos) {
+        minYPos = Math.min(sim.model[i][0].y, sim.model[i][1].y)
       }
-
     }
+    return minYPos
+  }
 
-    //returns a camera position which is 40 units away from the closest particle
-    cameraLevel.z = closestNodeZ - 40
-    return cameraLevel
+  function deltaY() {
+    return 40
   }
 }
 
