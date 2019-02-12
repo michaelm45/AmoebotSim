@@ -57,14 +57,14 @@ Entity {
         sumZ = sim.model[i][0].z + sim.model[i][1].z
       }
 
-  }
+    }
 
      // Returns the center of mass of all particles by taking average of sums.
      return Qt.vector3d(sumX / (2 * sim.model.length), sumY / (2 * sim.model.length),
                         sumZ / (2 * sim.model.length))
   }
 
-  function findCameraPosition()  {
+  function findCameraPosition() {
     var cameraLevel = camera.viewCenter
     var closestNodeZ = 0
 
@@ -77,7 +77,7 @@ Entity {
 
     }
 
-    //returns a camera position which is 50 units away from the closest particle
+    //returns a camera position which is 40 units away from the closest particle
     cameraLevel.z = closestNodeZ - 40
     return cameraLevel
   }
