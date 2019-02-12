@@ -57,15 +57,15 @@ Entity {
     }
 
      // Returns the center of mass of all particles by taking average of sums.
-     return Qt.vector3d(sumX / (2 * sim.model.length),
-                        sumY / (2 * sim.model.length),
-                        sumZ / (2 * sim.model.length))
+     return Qt.vector3d(sumX / (2.0 * sim.model.length),
+                        sumY / (2.0 * sim.model.length),
+                        sumZ / (2.0 * sim.model.length))
   }
 
   function minYPosition() {
     var minYPos = Number.MAX_SAFE_INTEGER
 
-    //Searches for the particle closest to the camera
+    // Finds the minimum y-position in the particle system.
     for (var i = 0; i < sim.model.length; i++) {
      if (Math.min(sim.model[i][0].y, sim.model[i][1].y)  < minYPos) {
         minYPos = Math.min(sim.model[i][0].y, sim.model[i][1].y)
