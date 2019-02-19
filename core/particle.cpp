@@ -3,7 +3,7 @@
 
 Particle::Particle(const Node& head, int globalTailDir)
   : head(head),
-    globalTailDir(globalTailDir){
+    globalTailDir(globalTailDir) {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
 }
 
@@ -28,9 +28,9 @@ Node Particle::tail() const {
 }
 
 int Particle::headMarkColor() const {
-  return 1;
+  return 0xffffff;
 }
 
 int Particle::tailMarkColor() const {
-  return 1;
+  return 0xffffff;
 }

@@ -1,8 +1,8 @@
 #include <QVector3D>
 #include <QColor>
 
-#include "interface/simulator.h"
 #include "helper/conversion.h"
+#include "interface/simulator.h"
 
 Simulator::Simulator() {
   _system = std::make_shared<System>();
