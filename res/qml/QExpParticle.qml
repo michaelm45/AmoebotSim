@@ -6,15 +6,19 @@ Entity {
   property var properties
   property vector3d headLocation: properties[0]
   property vector3d tailLocation: properties[1]
+  property var headColor: properties[2]
+  property var tailColor: properties[3]
 
   // Render the head node.
   QConParticle {
     location: headLocation
+    color: headColor
   }
 
   // Render the tail node.
   QConParticle {
     location: tailLocation
+    color: tailColor
   }
 
   // Render the cylinder connecting the head and tail nodes.

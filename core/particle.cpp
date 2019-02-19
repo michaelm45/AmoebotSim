@@ -26,3 +26,11 @@ Node Particle::tail() const {
     return head.nodeInDir(Conversion::intToUInt(globalTailDir));
   }
 }
+
+int Particle::headMarkColor() const {
+  return 0x000000;
+}
+
+int Particle::tailMarkColor() const {
+  return 0x000000;
+}
