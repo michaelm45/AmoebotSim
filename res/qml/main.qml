@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
 Item {
-// Renders a 3D GUI scene for the particle system.
+  // Renders a 3D GUI scene for the particle system.
   Scene3D {
     anchors.fill: parent
     focus: true

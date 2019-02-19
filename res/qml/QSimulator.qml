@@ -10,12 +10,11 @@ Entity {
     projectionType: CameraLens.PerspectiveProjection
     fieldOfView: 45
     aspectRatio: 16/9
-    nearPlane : 0.1
-    farPlane : 1000.0
-    position : Qt.vector3d(centerOfMass().x, minYPosition() - deltaY(),
-                           centerOfMass().z)
-    upVector : Qt.vector3d(0.0, 0.0, 1.0)
-    viewCenter : centerOfMass()
+    nearPlane: 0.1
+    farPlane: 1000.0
+    Component.onCompleted: {
+        resetCameraPosition()
+    }
   }
 
   OrbitCameraController {
@@ -67,7 +66,7 @@ Entity {
 
     // Finds the minimum y-position in the particle system.
     for (var i = 0; i < sim.model.length; i++) {
-     if (Math.min(sim.model[i][0].y, sim.model[i][1].y)  < minYPos) {
+      if (Math.min(sim.model[i][0].y, sim.model[i][1].y) < minYPos) {
         minYPos = Math.min(sim.model[i][0].y, sim.model[i][1].y)
       }
     }
