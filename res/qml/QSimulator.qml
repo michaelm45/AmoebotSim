@@ -13,7 +13,7 @@ Entity {
     nearPlane: 0.1
     farPlane: 1000.0
     Component.onCompleted: {
-        resetCameraPosition()
+      resetCameraPosition()
     }
   }
 
@@ -37,10 +37,10 @@ Entity {
   }
 
   function resetCameraPosition() {
-    camera.position = Qt.vector3d(centerOfMass().x, minYPosition() - deltaY(),
-                                  centerOfMass().z)
-    camera.upVector = Qt.vector3d(0.0, 0.0, 1.0)
     camera.viewCenter = centerOfMass()
+    camera.position = Qt.vector3d(camera.viewCenter.x, minYPosition() - 40,
+                                  camera.viewCenter.z)
+    camera.upVector = Qt.vector3d(0.0, 0.0, 1.0)
   }
 
   function centerOfMass() {
@@ -50,15 +50,14 @@ Entity {
 
     for (var i = 0; i < sim.model.length; i++) {
       // Calculates the sum of head and tail locations of all particles
-      sumX = sim.model[i][0].x + sim.model[i][1].x
-      sumY = sim.model[i][0].y + sim.model[i][1].y
-      sumZ = sim.model[i][0].z + sim.model[i][1].z
+      sumX += sim.model[i][0].x + sim.model[i][1].x
+      sumY += sim.model[i][0].y + sim.model[i][1].y
+      sumZ += sim.model[i][0].z + sim.model[i][1].z
     }
 
-     // Returns the center of mass of all particles by taking average of sums.
-     return Qt.vector3d(sumX / (2.0 * sim.model.length),
-                        sumY / (2.0 * sim.model.length),
-                        sumZ / (2.0 * sim.model.length))
+    // Returns the center of mass of all particles by taking average of sums.
+    var numNodes = 2.0 * sim.model.length
+    return Qt.vector3d(sumX / numNodes, sumY / numNodes, sumZ / numNodes)
   }
 
   function minYPosition() {
@@ -70,11 +69,8 @@ Entity {
         minYPos = Math.min(sim.model[i][0].y, sim.model[i][1].y)
       }
     }
-    return minYPos
-  }
 
-  function deltaY() {
-    return 40
+    return minYPos
   }
 }
 

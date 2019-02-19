@@ -15,7 +15,6 @@ Item {
     QSimulator {id: simulator}
   }
 
-
   ColumnLayout {
     anchors.right: parent.right
     anchors.top: parent.top
