@@ -1,4 +1,4 @@
-#include <QVector3D>
+﻿#include <QVector3D>
 #include <QColor>
 
 #include "helper/conversion.h"
@@ -27,12 +27,9 @@ QList<QVariant> Simulator::getModel() const {
                                                             head.z});
     std::vector<double> tailPos = Conversion::cartesianPos({tail.x, tail.y,
                                                             tail.z});
-    QVariant particle = QVariant({QVector3D(head.x, head.y, head.z),
-                                  QVector3D(tail.x, tail.y, tail.z),
-                                  QColor::fromRgb(Conversion::intToUInt(p.headMarkColor())),
-                                  QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor())),
-                                  QVector3D(headMarker[0], headMarker[1], headMarker[2]),
-                                  QVector3D(tailMarker[0], tailMarker[1], tailMarker[2])});
+
+    QColor headColor = QColor::fromRgb(Conversion::intToUInt(p.headMarkColor()));
+    QColor tailColor = QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()));
 
     QVector3D headCoor(float(headPos.at(0)), float(headPos.at(1)),
                        float(headPos.at(2)));
@@ -46,10 +43,13 @@ QList<QVariant> Simulator::getModel() const {
     QVector3D markTCoor(float(tailMarker.at(0)), float(tailMarker.at(1)),
                         float(tailMarker.at(2)));
 
-    model.push_back(QVariant({expansionFactor * headCoor,
-                              expansionFactor * tailCoor,
-                              expansionFactor * markHCoor,
-                              expansionFactor * markTCoor}));
+    QVariant particle = QVariant({expansionFactor * headCoor,
+                                  expansionFactor * tailCoor,
+                                  headColor, tailColor,
+                                  expansionFactor * markHCoor,
+                                  expansionFactor * markTCoor});
+
+    model.push_back(particle);
   }
 
   return model;
