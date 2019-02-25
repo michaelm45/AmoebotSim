@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "core/particle.h"
 #include "helper/conversion.h"
 
@@ -37,9 +35,9 @@ int Particle::tailMarkColor() const {
 }
 
 int Particle::globalHeadMarkDir() const {
-  return rand()%12;
+  return -1;
 }
 
 int Particle::globalTailMarkDir() const {
-  return rand()%12;
+  return -1;
 }
