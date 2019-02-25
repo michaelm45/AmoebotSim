@@ -19,7 +19,6 @@ bool Particle::isExpanded() const {
 
 Node Particle::tail() const {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
-
   if (isContracted()) {
     return head;
   } else {
@@ -33,4 +32,12 @@ int Particle::headMarkColor() const {
 
 int Particle::tailMarkColor() const {
   return 0x000000;
+}
+
+int Particle::globalHeadMarkDir() const {
+  return -1;
+}
+
+int Particle::globalTailMarkDir() const {
+  return -1;
 }

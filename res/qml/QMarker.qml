@@ -2,31 +2,24 @@ import Qt3D.Core 2.0
 import Qt3D.Extras 2.0
 
 Entity {
-  property var properties
-  property vector3d location: properties[0]
-  property var color: properties[2]
-  property vector3d mark: properties[4]
+  property vector3d markDir
+  property var markerColor
 
   Transform {
     id: sphereTransformer
-    translation: location
+    translation: markDir
   }
 
   SphereMesh {
     id: sphereMesh
     slices: 60
     rings: 60
-    radius: 0.65
+    radius: 0.35
   }
 
   PhongMaterial {
-    ambient: color
+    ambient: markerColor
     id: material
-  }
-
-  QMarker {
-    markDir: mark
-    markerColor: color
   }
 
   components: [sphereTransformer, sphereMesh, material]
