@@ -8,7 +8,7 @@ std::vector<Particle> System::getParticles() {
   return _particles;
 }
 std::vector<Particle> System::randomizedInit() {
-  srand (time(NULL));
+  srand (0);
   std::vector<Particle> sys;
   int size = rand() % 10 + 1;
   for(int i = 0; i < size; ++i) {

@@ -3,6 +3,7 @@ import Qt3D.Extras 2.0
 
 Entity {
   property vector3d markDir
+  property var color
 
   Transform {
     id: sphereTransformer
@@ -17,7 +18,7 @@ Entity {
   }
 
   PhongMaterial {
-    ambient: 'red'
+    ambient: color
     id: material
   }
 

@@ -3,6 +3,8 @@
 #ifndef AMOEBOTSIM_HELPER_CONVERSION_H_
 #define AMOEBOTSIM_HELPER_CONVERSION_H_
 
+#include <vector>
+
 #include <QtGlobal>
 
 class Conversion {
