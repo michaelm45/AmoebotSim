@@ -5,7 +5,7 @@ Entity {
   property var properties
   property vector3d location: properties[0]
   property var color: properties[2]
-  property vector3d mark: properties[3]
+  property vector3d mark: properties[4]
 
   Transform {
     id: sphereTransformer
