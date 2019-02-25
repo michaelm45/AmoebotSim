@@ -18,7 +18,6 @@ class System {
 
  private:
   std::vector<Particle> _particles;
-  std::vector<Particle> randomizedInit();
 };
 
 #endif  // AMOEBOTSIM_CORE_SYSTEM_H_

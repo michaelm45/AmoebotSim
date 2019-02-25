@@ -21,8 +21,8 @@ Entity {
   // Render the tail node.
   QConParticle {
     location: tailLocation
-    mark: tailMark
     color: tailColor
+    mark: tailMark
   }
 
   // Render the cylinder connecting the head and tail nodes.

@@ -20,17 +20,17 @@ class Particle {
   bool isExpanded() const;
 
   // Functions to give color to the head and tail of particles. Colors set by
-  // hex RGB values.
+  // hex RGB values. Direction of head and tail markers are set by a direction
+  // from 0 to 11.
   int virtual headMarkColor() const;
   int virtual tailMarkColor() const;
+  int virtual globalHeadMarkDir() const;
+  int virtual globalTailMarkDir() const;
 
   // Returns the node occupied by the particle's tail. Returns the head node if
   // contracted, and otherwise returns the node in the global tail direction
   // from the head node.
   Node tail() const;
-
-  int virtual globalHeadMarkDir() const;
-  int virtual globalTailMarkDir() const;
 
   Node head;
   int globalTailDir;

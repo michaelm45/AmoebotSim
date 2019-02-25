@@ -26,7 +26,7 @@ Entity {
 
   QMarker {
     markDir: mark
-    color: color
+    markerColor: color
   }
 
   components: [sphereTransformer, sphereMesh, material]
