@@ -36,7 +36,7 @@ Entity {
     components: [
       PointLight {
         color: "white"
-        intensity: 0.6
+        intensity: 0.4
       },
       Transform {
         translation: camera.position.plus(Qt.vector3d(0, -5, 0))

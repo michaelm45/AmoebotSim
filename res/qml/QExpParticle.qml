@@ -26,12 +26,17 @@ Entity {
   }
 
   // Render the cylinder connecting the head and tail nodes.
+  property real dX: (headLocation.x - tailLocation.x)
+  property real dY: (headLocation.y - tailLocation.y)
+  property real dZ: (headLocation.z - tailLocation.z)
+  property real magnitude: Math.sqrt(dX*dX + dY*dY + dZ*dZ)
+
   Entity {
     CylinderMesh {
       id: mesh
-      radius: .5
-      length: 1
-      rings: 100
+      radius: .3
+      length: magnitude
+      rings: 2
       slices: 20
     }
 
@@ -40,6 +45,11 @@ Entity {
       translation: Qt.vector3d((headLocation.x + tailLocation.x) / 2.0,
                                (headLocation.y + tailLocation.y) / 2.0,
                                (headLocation.z + tailLocation.z) / 2.0)
+
+      property real xRot: Math.acos(dY / magnitude) * 180 / Math.PI
+      property real yRot: Math.atan2(dX, dZ) * 180 / Math.PI
+      rotation: fromAxesAndAngles(Qt.vector3d(1, 0, 0), xRot,
+                                  Qt.vector3d(0, 1, 0), yRot)
     }
 
     PhongMaterial {
