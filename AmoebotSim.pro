@@ -8,6 +8,7 @@ SOURCES += \
     helper/randomnumbergenerator.cpp \
     helper/conversion.cpp \
     helper/utility.cpp
+    core/localparticle.cpp
 
 HEADERS += \
     core/particle.h \
@@ -17,6 +18,7 @@ HEADERS += \
     helper/randomnumbergenerator.h \
     helper/conversion.h \
     helper/utility.h
+    core/localparticle.h
 
 RESOURCES += \
     res/qml.qrc

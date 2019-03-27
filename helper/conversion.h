@@ -16,6 +16,9 @@ class Conversion {
   // Function takes in lattice coordinates and maps to Cartesian space.
   static std::vector<double> cartesianPos(std::vector<int> latticePos);
 
+  // Function takes the expansion direction and returns the new tailPosition
+  static int tailDirAfterExpansion(int expansionDir);
+
   // Function takes in vector of doubles. Forces vector to have size of 3.
   // Returns QVector3D with float positions.
   static QVector3D vecToQVec3D(std::vector<double> vec);

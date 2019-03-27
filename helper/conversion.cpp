@@ -25,6 +25,16 @@ std::vector<double> Conversion::cartesianPos(std::vector<int> latticePos) {
   return {x_c, y_c, z_c};
 }
 
+uint Conversion::tailDirAfterExpansion(int expansionDir) {
+  if (expansionDir < 6) { return (expansionDir + 3) % 6;}
+  else if (expansionDir == 6) { return 10;}
+  else if (expansionDir == 7) { return 11;}
+  else if (expansionDir == 8) { return 9;}
+  else if (expansionDir == 9) { return 8;}
+  else if (expansionDir == 10) { return 9;}
+  else { return 7;}
+}
+
 QVector3D Conversion::vecToQVec3D(std::vector<double> vec) {
   Q_ASSERT(vec.size() == 3);
   return {static_cast<float>(vec[0]), static_cast<float>(vec[1]),
