@@ -1,10 +1,6 @@
 #include "core/localparticle.h"
 #include "helper/conversion.h"
 
-const std::vector<int> LocalParticle::twelveLabels = {
-  {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
-};
-
 const std::vector<std::vector<int>> LocalParticle::latticeDir = {
   {
      {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
@@ -13,6 +9,25 @@ const std::vector<std::vector<int>> LocalParticle::latticeDir = {
      {0, 5, 4, 3, 2, 1, 11, 10, 9, 8, 7, 6},
      {2, 1, 0, 5, 4, 3, 9, 11, 10, 6, 8, 7},
      {4, 3, 2, 1, 0, 5, 10, 9, 11, 7, 6, 8}
+  }
+};
+
+const std::vector<std::vector<std::vector<int>>> LocalParticle::latticeMappings
+= {
+  {
+    {
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
+    {1, 9, 10, 4, 8, 6, 2, 3, 7, 11, 5, 0},
+    {3, 7, 6, 0, 11, 10, 2, 1, 9, 8, 4, 5},
+    {9, 2, 7, 8, 5, 11, 1, 6, 0, 3, 4, 10}
+    },
+
+    {
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
+    {14, 15, 5, 11, 9, 2, 13, 16, 6, 12, 8, 1, 3, 4, 10, 17, 7, 0},
+    {4, 10, 9, 8, 0, 17, 16, 15, 3, 2, 1, 13, 14, 11, 12, 7, 6, 5},
+    {17, 13, 2, 9, 12, 7, 16, 14, 3, 10, 11, 6, 0, 1, 8, 4, 5, 15}
+    }
   }
 };
 
@@ -49,25 +64,6 @@ const std::vector<std::vector<int>> LocalParticle::expandDir = {
    }
 };
 
-const std::vector<std::vector<std::vector<int>>> LocalParticle::latticeMappings = {
-  {
-    {
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
-    {1, 9, 10, 4, 8, 6, 2, 3, 7, 11, 5, 0},
-    {3, 7, 6, 0, 11, 10, 2, 1, 9, 8, 4, 5},
-    {9, 2, 7, 8, 5, 11, 1, 6, 0, 3, 4, 10}
-    },
-
-    {
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
-    {14, 15, 5, 11, 9, 2, 13, 16, 6, 12, 8, 1, 3, 4, 10, 17, 7, 0},
-    {4, 10, 9, 8, 0, 17, 16, 15, 3, 2, 1, 13, 14, 11, 12, 7, 6, 5},
-    {17, 13, 2, 9, 12, 7, 16, 14, 3, 10, 11, 6, 0, 1, 8, 4, 5, 15}
-    }
-  }
-};
-
-
 LocalParticle::LocalParticle(const Node& head, int globalTailDir,
                              const int orientation)
   : Particle(head, globalTailDir),
@@ -95,8 +91,8 @@ int LocalParticle::labelToDir(int label) const {
 
 int LocalParticle::labelToDirAfterExpansion(int label, int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= label && label < 10);
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
+  Q_ASSERT(0 <= label && label < 12);
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
 
   return labelMapping(expandDir[Conversion::intToUInt(mappedExpansion(expansionDir))])
                                [Conversion::intToUInt(mappedLabel(label))];
@@ -105,9 +101,8 @@ int LocalParticle::labelToDirAfterExpansion(int label, int expansionDir) const {
 
 std::vector<int> LocalParticle::headLabels() const {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 11);
-  int option = orientation % 6;
   if(isContracted()) {
-    return labelMapping(latticeDir[Conversion::intToUInt(option)]);
+    return labelMapping(latticeDir[Conversion::intToUInt(orientation % 6)]);
   } else {
     std::vector<int> localLabels = expandLabel[Conversion::intToUInt(oppositeDir(globalTailDir))];
     std::vector<int> head (localLabels.begin(), localLabels.begin() + 5);
@@ -115,59 +110,51 @@ std::vector<int> LocalParticle::headLabels() const {
   }
 }
 
-// Find the labels that are not in head labels and union with shared labels;
 std::vector<int> LocalParticle::tailLabels() const {
   Q_ASSERT(!isContracted());
-  std::vector<int> tailLabel;
+  std::vector<int> tail;
+  std::vector<int> shared;
   std::vector<int> localLabels = expandLabel[Conversion::intToUInt(oppositeDir(globalTailDir))];
-  std::vector<int> temp (localLabels.begin(), localLabels.begin() + 5);
-  temp = sharedLabels(adjacentLabels(temp));
-  if(temp.size() <= 2) {
-    tailLabel.push_back(localLabels[0]);
-    tailLabel.insert(tailLabel.end(), localLabels.begin() + 5, localLabels.begin() + 9);
-    tailLabel.insert(tailLabel.end(), temp.begin(), temp.end());
-  } else {
-    tailLabel.insert(tailLabel.end(), localLabels.begin() + 6, localLabels.begin() + 12);
-    tailLabel = adjacentLabels(tailLabel);
-    tailLabel.insert(tailLabel.end(), temp.begin() + 2, temp.end());
+  std::vector<int> head (localLabels.begin(), localLabels.begin() + 5);
+  head = adjacentLabels(head);
+  shared = sharedLabels(head);
+  for(int i = 0; i < 18; ++i) {
+    if(std::find(head.begin(), head.end(), i) == head.end()) {
+      tail.push_back(i);
+    }
   }
-  return labelMapping(tailLabel);
+  tail.insert(tail.end(), shared.begin(), shared.end());
+  return labelMapping(tail);
 }
 
 bool LocalParticle::isHeadLabel(int label) const {
   Q_ASSERT(0 <= label && label < 18);
-
   for (const int headLabel : headLabels()) {
     if (label == headLabel) {
       return true;
     }
   }
-
   return false;
 }
 
 bool LocalParticle::isTailLabel(int label) const {
   Q_ASSERT(isExpanded());
   Q_ASSERT(0 <= label && label < 18);
-
   for (const int tailLabel : tailLabels()) {
     if (label == tailLabel) {
       return true;
     }
   }
-
   return false;
 }
 
 int LocalParticle::dirToHeadLabel(int dir) const {
   Q_ASSERT(0 <= dir && dir < 12);
-
   for (const int headLabel : headLabels()) {
     if (dir == labelToDir(headLabel)) {
       return headLabel;
     }
   }
-
   Q_ASSERT(false);
   return 0;  // Avoid compiler warning.
 }
@@ -176,100 +163,87 @@ int LocalParticle::dirToHeadLabel(int dir) const {
 int LocalParticle::dirToTailLabel(int dir) const {
   Q_ASSERT(isExpanded());
   Q_ASSERT(0 <= dir && dir < 12);
-
   for (const int tailLabel : tailLabels()) {
     if (dir == labelToDir(tailLabel)) {
       return tailLabel;
     }
   }
-
   Q_ASSERT(false);
   return 0;  // Avoid compiler warning.
 }
 
 std::vector<int> LocalParticle::headLabelsAfterExpansion(int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
   std::vector<int> localLabels = expandLabel[Conversion::intToUInt(mappedExpansion(expansionDir))];
   std::vector<int> head (localLabels.begin(), localLabels.begin() + 5);
-
   return labelMapping(surroundLabels(head));
 }
 
 
 std::vector<int> LocalParticle::tailLabelsAfterExpansion(int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
 
-  std::vector<int> tailLabel;
+  std::vector<int> tail;
+  std::vector<int> shared;
   std::vector<int> localLabels = expandLabel[Conversion::intToUInt(mappedExpansion(expansionDir))];
-  std::vector<int> temp (localLabels.begin(), localLabels.begin() + 5);
-  temp = sharedLabels(adjacentLabels(temp));
-  if(temp.size() <= 2) {
-    tailLabel.push_back(localLabels[0]);
-    tailLabel.insert(tailLabel.end(), localLabels.begin() + 5, localLabels.begin() + 9);
-    tailLabel.insert(tailLabel.end(), temp.begin(), temp.end());
-  } else {
-    tailLabel.insert(tailLabel.end(), localLabels.begin() + 6, localLabels.begin() + 12);
-    tailLabel = adjacentLabels(tailLabel);
-    tailLabel.insert(tailLabel.end(), temp.begin() + 2, temp.end());
+  std::vector<int> head (localLabels.begin(), localLabels.begin() + 5);
+  head = adjacentLabels(head);
+  shared = sharedLabels(head);
+  for(int i = 0; i < 18; ++i) {
+    if(std::find(head.begin(), head.end(), i) == head.end()) {
+      tail.push_back(i);
+    }
   }
-  return labelMapping(tailLabel);
+  tail.insert(tail.end(), shared.begin(), shared.end());
+  return labelMapping(tail);
 }
 
 bool LocalParticle::isHeadLabelAfterExpansion(int label, int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
-
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
   for (const int headLabel : headLabelsAfterExpansion(expansionDir)) {
     if (label == headLabel) {
       return true;
     }
   }
-
   return false;
 }
 
 bool LocalParticle::isTailLabelAfterExpansion(int label, int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
-
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
   for (const int tailLabel : tailLabelsAfterExpansion(expansionDir)) {
     if (label == tailLabel) {
       return true;
     }
   }
-
   return false;
 }
 
 int LocalParticle::dirToHeadLabelAfterExpansion(int dir, int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= dir && dir < 6);
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
-
+  Q_ASSERT(0 <= dir && dir < 12);
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
   for (const int headLabel : headLabelsAfterExpansion(expansionDir)) {
     if (dir == labelToDirAfterExpansion(headLabel, expansionDir)) {
       return headLabel;
     }
   }
-
   Q_ASSERT(false);
   return 0;  // Avoid compiler warning.
 }
 
-int LocalParticle::dirToTailLabelAfterExpansion(int dir, int expansionDir)
-    const {
+int LocalParticle::dirToTailLabelAfterExpansion(int dir, int expansionDir) const {
   Q_ASSERT(isContracted());
-  Q_ASSERT(0 <= dir && dir < 6);
-  Q_ASSERT(0 <= expansionDir && expansionDir < 6);
-
+  Q_ASSERT(0 <= dir && dir < 12);
+  Q_ASSERT(0 <= expansionDir && expansionDir < 12);
   for (const int tailLabel : tailLabelsAfterExpansion(expansionDir)) {
     if (dir == labelToDirAfterExpansion(tailLabel, expansionDir)) {
       return tailLabel;
     }
   }
-
   Q_ASSERT(false);
   return 0;  // Avoid compiler warning.
 }
@@ -279,28 +253,21 @@ int LocalParticle::labelToGlobalDir(int label) const {
   return localToGlobalDir(labelToDir(label));
 }
 
-int LocalParticle::labelOfNbrNodeInGlobalDir(const Node& node, int globalDir)
-    const {
-  Q_ASSERT(0 <= globalDir && globalDir < 6);
-
-  const int labelLimit = (isContracted()) ? 6 : 10;
+int LocalParticle::labelOfNbrNodeInGlobalDir(const Node& node, int globalDir) const {
+  Q_ASSERT(0 <= globalDir && globalDir < 12);
+  const int labelLimit = (isContracted()) ? 12 : 18;
   for (int label = 0; label < labelLimit; label++) {
     if (labelToGlobalDir(label) == globalDir &&
         nbrNodeReachedViaLabel(label) == node) {
       return label;
     }
   }
-
   Q_ASSERT(false);
   return 0;  // Avoid compiler warning.
 }
-// TODO: labelOfNbrNodeInGlobalDir, occupiedNodeIncidentToLabel
-//      nbrNodeReachedViaLabel
-
 
 Node LocalParticle::occupiedNodeIncidentToLabel(int label) const {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 6);
-
   if (isContracted()) {
     Q_ASSERT(0 <= label && label < 12);
     return head;
@@ -313,7 +280,7 @@ Node LocalParticle::occupiedNodeIncidentToLabel(int label) const {
 Node LocalParticle::nbrNodeReachedViaLabel(int label) const {
   Q_ASSERT(-1 <= globalTailDir && globalTailDir < 12);
   if (isContracted()) {
-    Q_ASSERT(0 <= label && label < 6);
+    Q_ASSERT(0 <= label && label < 12);
     return head.nodeInDir(Conversion::intToUInt(labelToGlobalDir(label)));
   } else {
     Q_ASSERT(0 <= label && label < 18);
@@ -324,30 +291,25 @@ Node LocalParticle::nbrNodeReachedViaLabel(int label) const {
 
 int LocalParticle::localToGlobalDir(int localDir) const {
   Q_ASSERT(0 <= localDir && localDir < 12);
-  int option = orientation % 6;
-  return latticeDir[Conversion::intToUInt(option)][Conversion::intToUInt(mappedDir(localDir))];
+  return latticeDir[Conversion::intToUInt(orientation % 6)][Conversion::intToUInt(mappedDir(localDir))];
 }
 
 int LocalParticle::globalToLocalDir(int globalDir) const {
-  int option = orientation % 6;
-  return labelMapping(latticeDir[Conversion::intToUInt(option)])[Conversion::intToUInt(globalDir)];
+  return labelMapping(latticeDir[Conversion::intToUInt(orientation % 6)])[Conversion::intToUInt(globalDir)];
 }
 
 int LocalParticle::nbrDirToDir(const LocalParticle& nbr, int nbrDir) const {
-  Q_ASSERT(0 <= nbrDir && nbrDir < 6);
-
+  Q_ASSERT(0 <= nbrDir && nbrDir < 12);
   return globalToLocalDir(nbr.localToGlobalDir(nbrDir));
 }
 
 int LocalParticle::dirToNbrDir(const LocalParticle& nbr, int myDir) const {
-  Q_ASSERT(0 <= myDir && myDir < 6);
-
+  Q_ASSERT(0 <= myDir && myDir < 12);
   return nbr.globalToLocalDir(localToGlobalDir(myDir));
 }
 
 bool LocalParticle::pointsAtMe(const LocalParticle& nbr, int nbrLabel) const {
-  Q_ASSERT(0 <= nbrLabel && nbrLabel < 10);
-
+  Q_ASSERT(0 <= nbrLabel && nbrLabel < 18);
   if (isContracted()) {
     return pointsAtMyHead(nbr, nbrLabel);
   } else {
@@ -355,29 +317,24 @@ bool LocalParticle::pointsAtMe(const LocalParticle& nbr, int nbrLabel) const {
   }
 }
 
-bool LocalParticle::pointsAtMyHead(const LocalParticle& nbr, int nbrLabel)
-    const {
-  Q_ASSERT(0 <= nbrLabel && nbrLabel < 10);
-
+bool LocalParticle::pointsAtMyHead(const LocalParticle& nbr, int nbrLabel) const {
+  Q_ASSERT(0 <= nbrLabel && nbrLabel < 18);
   return nbr.nbrNodeReachedViaLabel(nbrLabel) == head;
 }
 
-bool LocalParticle::pointsAtMyTail(const LocalParticle& nbr, int nbrLabel)
-    const {
+bool LocalParticle::pointsAtMyTail(const LocalParticle& nbr, int nbrLabel) const {
   Q_ASSERT(isExpanded());
-  Q_ASSERT(0 <= nbrLabel && nbrLabel < 10);
-
+  Q_ASSERT(0 <= nbrLabel && nbrLabel < 18);
   return nbr.nbrNodeReachedViaLabel(nbrLabel) == tail();
 }
 
 
 std::vector<int> LocalParticle::labelMapping(std::vector<int> basisVector) const {
-  int lattice = orientation / 6;
   std::vector<int> labelingScheme;
   int conversionOption = *max_element(std::begin(basisVector), std::end(basisVector)) > 12 ? 1 : 0;
   for(int i: basisVector){
     labelingScheme.push_back(latticeMappings[Conversion::intToUInt(conversionOption)]
-                            [Conversion::intToUInt(lattice)][Conversion::intToUInt(i)]);
+                            [Conversion::intToUInt(orientation / 6)][Conversion::intToUInt(i)]);
   }
   return labelingScheme;
 }
@@ -386,7 +343,7 @@ int LocalParticle::oppositeLabel(int label) const {
   if(isContracted()) {
     return oppositeDir(label);
   } else {
-    if(globalTailDir < 6) { // you expanded into the same level
+    if(globalTailDir < 6) {
       int opp[] {4, 5, 6, 7, 0, 1, 2, 3, 15, 16, 17, 13, 14, 11, 12, 8, 9, 10};
       return opp[label];
     } else {
@@ -413,8 +370,7 @@ int LocalParticle::mappedDir(int dir) const {
 
 int LocalParticle::mappedLabel(int label) const {
   int mappedLabel = label;
-  int option = orientation % 6;
-  std::vector<int> localLabels = labelMapping(latticeDir[Conversion::intToUInt(option)]);
+  std::vector<int> localLabels = labelMapping(latticeDir[Conversion::intToUInt(orientation % 6)]);
   for(int i = 0; i < localLabels.size(); ++i) {
     if(localLabels[Conversion::intToUInt(i)] == label){
       mappedLabel = i;
@@ -423,11 +379,11 @@ int LocalParticle::mappedLabel(int label) const {
   return mappedLabel;
 }
 
-std::vector<int> LocalParticle::surroundLabels(std::vector<int> adjacentLabel) const {
-  adjacentLabel = adjacentLabels(adjacentLabel);
-  std::vector<int> shared = sharedLabels(adjacentLabel);
-  adjacentLabel.insert(adjacentLabel.end(), shared.begin(), shared.begin() + 2);
-  return adjacentLabel;
+std::vector<int> LocalParticle::surroundLabels(std::vector<int> labels) const {
+  labels = adjacentLabels(labels);
+  std::vector<int> shared = sharedLabels(labels);
+  labels.insert(labels.end(), shared.begin(), shared.begin() + 2);
+  return labels;
 }
 
 std::vector<int> LocalParticle::sharedLabels(std::vector<int> adjacentLabels) const {

@@ -30,9 +30,7 @@ class LocalParticle : public Particle {
   // of the edge pointing in the given local direction. These conversions will
   // fail on an expanded particle if dirToHeadLabel (resp., dirToTailLabel) is
   // called with the local direction from head to tail (resp., tail to head), as
-  // the edge connecting the head and tail is not labelled. headContractionLabel
-  // (resp., tailContractionLabel) returns the label needed to perform a head
-  // (resp., tail) contraction.
+  // the edge connecting the head and tail is not labelled.
   std::vector<int> headLabels() const;
   std::vector<int> tailLabels() const;
   bool isHeadLabel(int label) const;
@@ -84,7 +82,11 @@ class LocalParticle : public Particle {
   bool pointsAtMyHead(const LocalParticle& nbr, int nbrLabel) const;
   bool pointsAtMyTail(const LocalParticle& nbr, int nbrLabel) const;
 
-  const int orientation; // Offset from global direction for local compass.
+  // Orientation is an int in [0, 23] that represents a possible local compass
+  // configuration. A particle can lie on one of four hexagonal layers,
+  // have a cyclic rotation of 0, 2 or 4 and two different orthoginal up
+  // local directions on that hexagonal layer.
+  const int orientation;
 
   // Function to return local labeling scheme based on orientation.
   std::vector<int> labelMapping(std::vector<int> basisVector) const;
@@ -95,32 +97,49 @@ class LocalParticle : public Particle {
   // Function to calculate opposite directions.
   int oppositeDir(int dir) const;
 
-  // Function to map local expansionDirections in different lattices to the correct
-  // local label.
+  // Function to map local expansionDirections in different lattices to the
+  // correct local label.
   int mappedExpansion(int expandDir) const;
 
   // Function to map a local label to global labeling scheme.
   int mappedLabel(int label) const;
 
-  // Function
+  // Function to map a local direction to global direction.
   int mappedDir(int dir) const;
 
-  std::vector<int> sharedLabels(std::vector<int> adjacentLabels) const;
-  std::vector<int> adjacentLabels(std::vector<int> basisVector) const;
-
-  // Only works with the head
+  // Functions to calculate the labels adjacent to the head of expanded
+  // particles. sharedLabels takes in the labels adjacent to the head of an
+  // expanded particle and returns the labels shared by both the head and tail
+  // of the expanded particle. adjacentLables takes in a vector of labels
+  // adjacent to the head in the same hexagonal plane and returns all the
+  // labels above, below and in that hexagonal plane. surroundLabels is a
+  // helper function to return all adjacent and shared labels of the head
+  // of an expanded particle.
+  std::vector<int> sharedLabels(std::vector<int> labels) const;
+  std::vector<int> adjacentLabels(std::vector<int> labels) const;
   std::vector<int> surroundLabels(std::vector<int> adjacentLabels) const;
 
  private:
-  static const std::vector<int> twelveLabels;
-  static const std::array<const std::vector<int>, 12> labels;
-  static const std::array<int, 12> contractLabels;
-  static const std::array<std::array<int, 18>, 10> labelDir;
+  // latticeDir is a set of vectors that represents the different rotation &
+  // flip combinations within the same hexagonal plane. Vectors in index 0-2
+  // represents a cyclic rotation of 0, 2, and 4 with no flip & index 3-5
+  // represents a cyclic rotation of 0, 2, and 4 with a flip.
   static const std::vector<std::vector<int>> latticeDir;
+
+  // latticeMappings is a strucutre used to convert different lattice
+  // configurations to correct global orientation. The first set of vectors
+  // represents the conversions for the four different hexagonal planes
+  // of contracted particles and the second set of vectors represents the
+  // conversions between the four hexagnal planes of expanded particles.
   static const std::vector<std::vector<std::vector<int>>> latticeMappings;
+
+  // expandLabel represents the local labeling of a particle after expanding
+  // in directions i in [0,12]. Vector at i represents the its labeling scheme
+  // after expanding in direction i.
   static const std::vector<std::vector<int>> expandLabel;
+
+  // expandDir maps the repsective expandLabel labels to local directions.
   static const std::vector<std::vector<int>> expandDir;
-  static const std::vector<std::vector<int>> adjacentLabels;
 
 };
 #endif // AMOEBOTSIM_CORE_LOCALPARTICLE_H
