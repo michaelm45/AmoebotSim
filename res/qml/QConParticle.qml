@@ -4,7 +4,7 @@ import Qt3D.Extras 2.0
 Entity {
   property var properties
   property vector3d location: properties[0]
-  property var color: properties[2]
+  property string color: properties[2]
   property vector3d mark: properties[4]
 
   Transform {
@@ -28,6 +28,5 @@ Entity {
     markDir: mark
     markerColor: color
   }
-
   components: [sphereTransformer, sphereMesh, material]
 }

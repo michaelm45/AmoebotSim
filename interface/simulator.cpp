@@ -62,10 +62,15 @@ QList<QVariant> Simulator::getModel() const {
                     separation * Conversion::vectToQVect(tailMarkerPos),
                     p.inspectionText()});
 
-    model.push_back(particle);
+    model.push_back(QVariant(particle));
   }
-
   return model;
+}
+
+
+QList<QVariant> Simulator::getEdges() const {
+   std::vector<Particle> particles = _system->getParticles();
+   return latticeEdges(particles);
 }
 
 std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
@@ -84,4 +89,46 @@ std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
     return {0,0,0};
   }
 }
+
+QList<QVariant> Simulator::latticeEdges(std::vector<Particle> particles) const {
+  QList<QVariant> edges;
+  std::vector<double> renderedEdges;
+  QList<QVariant> addEdge;
+  float separation = 2;
+  for(Particle p: particles) {
+    std::vector<double> head =
+        Conversion::cartesianPos({p.head.x, p.head.y, p.head.z});
+    std::vector<double> tail =
+        Conversion::cartesianPos({{p.tail().x, p.tail().y, p.tail().z}});
+
+    for(Particle q: particles) {
+      if(p.head != q.head && p.tail() != q.tail()) {
+
+      std::vector<double> qHead =
+          Conversion::cartesianPos({q.head.x, q.head.y, q.head.z});
+      std::vector<double> qTail =
+          Conversion::cartesianPos({q.tail().x, q.tail().y, q.tail().z});
+
+      if(Conversion::distance(head, qHead) <= 1) {
+        edges.push_back(QVariant({separation * Conversion::vectToQVect(head),
+                                  separation * Conversion::vectToQVect(qHead)}));
+       }
+       if(Conversion::distance(head, qTail) <= 1){
+         edges.push_back(QVariant({separation * Conversion::vectToQVect(head),
+                                   separation * Conversion::vectToQVect(qTail)}));
+       }
+       if(Conversion::distance(tail, qHead) <= 1) {
+         edges.push_back(QVariant({separation * Conversion::vectToQVect(tail),
+                                   separation * Conversion::vectToQVect(qHead)}));
+       }
+       if(Conversion::distance(tail, qTail) <= 1) {
+         edges.push_back(QVariant({separation * Conversion::vectToQVect(tail),
+                                   separation * Conversion::vectToQVect(qTail)}));
+       }
+     }
+   }
+  }
+  return edges;
+}
+
 

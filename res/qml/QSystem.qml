@@ -3,6 +3,7 @@ import QtQuick 2.12
 
 Entity {
   property var modelListing
+  property var modelEdges
 
   signal inspectionText(string text)
 
@@ -13,5 +14,12 @@ Entity {
     delegate: QParticle {
       Component.onCompleted: { inspected.connect(inspectionText) }
     }
+  }
+
+  // edges passes each edge to be rendered to each QEdge delegate.
+  NodeInstantiator {
+    id: edges
+    model: modelEdges
+    delegate: QEdge {edges: model.modelData}
   }
 }

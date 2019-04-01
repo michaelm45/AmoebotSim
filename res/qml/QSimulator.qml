@@ -41,7 +41,7 @@ Entity {
     components: [
       PointLight {
         color: "white"
-        intensity: 0.4
+        intensity: .4
       },
       Transform {
         translation: camera.position.plus(Qt.vector3d(0, -5, 0))
@@ -52,6 +52,7 @@ Entity {
   property QSystem system : QSystem {
     id: systemLink
     modelListing: sim.model
+    modelEdges: sim.edges
   }
 
   Connections {

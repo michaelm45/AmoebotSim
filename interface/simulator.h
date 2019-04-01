@@ -21,10 +21,12 @@
 class Simulator : public QObject {
   Q_OBJECT
   Q_PROPERTY(QList<QVariant> model READ getModel NOTIFY modelSignal)
+  Q_PROPERTY(QList<QVariant> edges READ getEdges NOTIFY edgeSignal)
 
  signals:
   void modelSignal();
   void systemChanged() const;
+  void edgeSignal();
 
  public:
   // Default constructor (currently creates a System shared pointer).
@@ -38,9 +40,16 @@ class Simulator : public QObject {
   // coordinates. Primarily used by QML rendering.
   QList<QVariant> getModel() const;
 
+  // Returns the list of all edges to be displayed in the system. Each QVariant
+  // contains the start and end location of the edge needed.
+  QList<QVariant> getEdges() const;
+
+
  private:
   std::shared_ptr<System> _system;
   std::vector<double> markerPosInDir(Node marked, int dir) const;
+  QList<QVariant> latticeEdges(std::vector<Particle> particles) const;
+  //static float separation;
 };
 
 #endif  // AMOEBOTSIM_INTERFACE_SIMULATOR_H_

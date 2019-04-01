@@ -19,6 +19,10 @@ class Conversion {
   // Function takes in vector of doubles. Forces vector to have size of 3.
   // Returns QVector3D with float positions.
   static QVector3D vectToQVect(std::vector<double> vect);
+
+  // Function takes in two vectors of ints. Forces vector to have size of 3.
+  // Returns distance between two 3D points.
+  static double distance(std::vector<double> p1, std::vector<double> p2);
 };
 
 #endif  // AMOEBOTSIM_HELPER_CONVERSION_H_
