@@ -1,9 +1,9 @@
 #include "core/system.h"
 
 System::System() {
-  _particles = {Particle(Node(0, 0, 0), -1), Particle(Node(0, 2, 0), 0),
-                Particle(Node(1, 0, 1), 6), Particle(Node(0, -3, 0), -1),
-                Particle(Node(3, -1, 0), 8)};
+  for (int i = 0; i< 12; ++i) {
+    _particles.push_back(Particle(Node(0, 0, 0), i));
+  }
 }
 
 std::vector<Particle> System::getParticles() {

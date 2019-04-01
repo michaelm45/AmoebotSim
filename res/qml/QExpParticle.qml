@@ -25,11 +25,11 @@ Entity {
     mark: tailMark
   }
 
-  // Render edge between head and tail node.
+  // Render connector between head and tail node.
   QEdge {
       start: headLocation
       end: tailLocation
       visibility: 1
+      radius_: 0.3
   }
-
 }

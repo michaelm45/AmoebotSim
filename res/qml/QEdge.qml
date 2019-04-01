@@ -6,7 +6,8 @@ Entity {
   property var edges
   property vector3d start: edges[0]
   property vector3d end: edges[1]
-  property real visibility: .1
+  property real visibility: 0.4
+  property real radius_: 0.1
 
   // Render the cylinder connecting the head and tail nodes.
   property real dX: (start.x - end.x)
@@ -16,7 +17,7 @@ Entity {
 
   CylinderMesh {
     id: mesh
-    radius: .3
+    radius: radius_
     length: magnitude
     rings: 2
     slices: 20

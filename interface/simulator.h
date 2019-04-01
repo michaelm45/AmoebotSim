@@ -20,12 +20,12 @@
 
 class Simulator : public QObject {
   Q_OBJECT
-  Q_PROPERTY(QList<QVariant> model READ getModel NOTIFY modelSignal)
+  Q_PROPERTY(QList<QVariant> particles READ getParticleSys NOTIFY particleSysSignal)
   Q_PROPERTY(QList<QVariant> edges READ getEdges NOTIFY edgeSignal)
 
  signals:
-  void modelSignal();
   void systemChanged() const;
+  void particleSysSignal();
   void edgeSignal();
 
  public:
@@ -38,18 +38,18 @@ class Simulator : public QObject {
 
   // Returns the list of all particle locations in the system in Cartesian
   // coordinates. Primarily used by QML rendering.
-  QList<QVariant> getModel() const;
+  QList<QVariant> getParticleSys() const;
 
-  // Returns the list of all edges to be displayed in the system. Each QVariant
-  // contains the start and end location of the edge needed.
+  // Returns the list of edges between adjacent nodes to be displayed in
+  // the scene. Each QVariant in the QList contains a QList of the start and end
+  // locations of the edge.
   QList<QVariant> getEdges() const;
 
 
  private:
   std::shared_ptr<System> _system;
   std::vector<double> markerPosInDir(Node marked, int dir) const;
-  QList<QVariant> latticeEdges(std::vector<Particle> particles) const;
-  //static float separation;
+  float separation = 2;
 };
 
 #endif  // AMOEBOTSIM_INTERFACE_SIMULATOR_H_

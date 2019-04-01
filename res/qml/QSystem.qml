@@ -2,7 +2,7 @@ import Qt3D.Core 2.0
 import QtQuick 2.12
 
 Entity {
-  property var modelListing
+  property var modelParticles
   property var modelEdges
 
   signal inspectionText(string text)

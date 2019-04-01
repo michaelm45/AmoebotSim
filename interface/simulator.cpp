@@ -1,7 +1,8 @@
-﻿#include <QVector3D>
-#include <QColor>
+﻿#include <QColor>
+#include <QVector3D>
 
 #include "helper/conversion.h"
+#include "helper/utility.h"
 #include "interface/simulator.h"
 
 Simulator::Simulator() {
@@ -28,10 +29,9 @@ void Simulator::callSystemChanged() {
   qDebug() << "system changed!";
 }
 
-QList<QVariant> Simulator::getModel() const {
+QList<QVariant> Simulator::getParticleSys() const {
   QList<QVariant> model;
   std::vector<Particle> particles = _system->getParticles();
-  float separation = 2;
 
   // For each particle, its head and tail positions are pushed back onto list of
   // all particles' head and tail positions.
@@ -44,15 +44,15 @@ QList<QVariant> Simulator::getModel() const {
     std::vector<double> tailPos
         = Conversion::cartesianPos({tail.x, tail.y, tail.z});
 
-    QColor headColor
-        = QColor::fromRgb(Conversion::intToUInt(p.headMarkColor()));
-    QColor tailColor
-        = QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()));
+    QColor headColor =
+        QColor::fromRgb(Conversion::intToUInt(p.headMarkColor()));
+    QColor tailColor =
+        QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()));
 
-    std::vector<double> headMarkerPos
-        = markerPosInDir(head, p.globalHeadMarkDir());
-    std::vector<double> tailMarkerPos
-        = markerPosInDir(tail, p.globalTailMarkDir());
+    std::vector<double> headMarkerPos =
+        markerPosInDir(head, p.globalHeadMarkDir());
+    std::vector<double> tailMarkerPos =
+        markerPosInDir(tail, p.globalTailMarkDir());
 
     QVariant particle
         = QVariant({separation * Conversion::vectToQVect(headPos),
@@ -64,13 +64,8 @@ QList<QVariant> Simulator::getModel() const {
 
     model.push_back(QVariant(particle));
   }
+
   return model;
-}
-
-
-QList<QVariant> Simulator::getEdges() const {
-   std::vector<Particle> particles = _system->getParticles();
-   return latticeEdges(particles);
 }
 
 std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
@@ -90,44 +85,55 @@ std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
   }
 }
 
-QList<QVariant> Simulator::latticeEdges(std::vector<Particle> particles) const {
+QList<QVariant> Simulator::getEdges() const {
   QList<QVariant> edges;
-  std::vector<double> renderedEdges;
-  QList<QVariant> addEdge;
-  float separation = 2;
-  for(Particle p: particles) {
+  std::vector<Particle> particles = _system->getParticles();
+  for (Particle p: particles) {
     std::vector<double> head =
         Conversion::cartesianPos({p.head.x, p.head.y, p.head.z});
     std::vector<double> tail =
-        Conversion::cartesianPos({{p.tail().x, p.tail().y, p.tail().z}});
+        Conversion::cartesianPos({p.tail().x, p.tail().y, p.tail().z});
 
-    for(Particle q: particles) {
-      if(p.head != q.head && p.tail() != q.tail()) {
-
+/* Some of following functions have not been implemented yet but will be
+ * once AmoebotParticle is finished. I provide the more efficient code in
+ * comments in order to ensure the program compiles.
+ *
+ * for (int dir = 0; dir < 12; ++dir) {
+ *   if (p.hasNbrAtLabel(dir)) {
+ *     Particle q = p.nbrAtLabel(dir);
+ *     ...
+ *   }
+ * }
+*/
+    for (Particle q: particles) {
       std::vector<double> qHead =
           Conversion::cartesianPos({q.head.x, q.head.y, q.head.z});
       std::vector<double> qTail =
           Conversion::cartesianPos({q.tail().x, q.tail().y, q.tail().z});
 
-      if(Conversion::distance(head, qHead) <= 1) {
-        edges.push_back(QVariant({separation * Conversion::vectToQVect(head),
-                                  separation * Conversion::vectToQVect(qHead)}));
-       }
-       if(Conversion::distance(head, qTail) <= 1){
-         edges.push_back(QVariant({separation * Conversion::vectToQVect(head),
-                                   separation * Conversion::vectToQVect(qTail)}));
-       }
-       if(Conversion::distance(tail, qHead) <= 1) {
-         edges.push_back(QVariant({separation * Conversion::vectToQVect(tail),
-                                   separation * Conversion::vectToQVect(qHead)}));
-       }
-       if(Conversion::distance(tail, qTail) <= 1) {
-         edges.push_back(QVariant({separation * Conversion::vectToQVect(tail),
-                                   separation * Conversion::vectToQVect(qTail)}));
-       }
-     }
-   }
+      if (Utility::distance3D(head, qHead) <= 1) {
+        edges.push_back(
+              QVariant({separation * Conversion::vectToQVect3D(head),
+                        separation * Conversion::vectToQVect3D(qHead)}));
+      }
+      if (Utility::distance3D(head, qTail) <= 1) {
+        edges.push_back(
+              QVariant({separation * Conversion::vectToQVect3D(head),
+                        separation * Conversion::vectToQVect3D(qTail)}));
+      }
+      if (Utility::distance3D(tail, qHead) <= 1) {
+        edges.push_back(
+              QVariant({separation * Conversion::vectToQVect3D(tail),
+                        separation * Conversion::vectToQVect3D(qHead)}));
+      }
+      if (Utility::distance3D(tail, qTail) <= 1) {
+        edges.push_back(
+              QVariant({separation * Conversion::vectToQVect3D(tail),
+                        separation * Conversion::vectToQVect3D(qTail)}));
+      }
+    }
   }
+
   return edges;
 }
 

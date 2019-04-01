@@ -41,7 +41,7 @@ Entity {
     components: [
       PointLight {
         color: "white"
-        intensity: .4
+        intensity: 0.4
       },
       Transform {
         translation: camera.position.plus(Qt.vector3d(0, -5, 0))
@@ -51,7 +51,7 @@ Entity {
 
   property QSystem system : QSystem {
     id: systemLink
-    modelListing: sim.model
+    modelParticles: sim.particles
     modelEdges: sim.edges
   }
 
@@ -91,7 +91,7 @@ Entity {
     }
 
     // Returns the center of mass of all particles by taking average of sums.
-    var numNodes = 2.0 * sim.model.length
+    var numNodes = 2.0 * sim.particles.length
     return Qt.vector3d(sumX / numNodes, sumY / numNodes, sumZ / numNodes)
   }
 
@@ -99,9 +99,9 @@ Entity {
     var minYPos = Number.MAX_SAFE_INTEGER
 
     // Finds the minimum y-position in the particle system.
-    for (var i = 0; i < sim.model.length; i++) {
-      if (Math.min(sim.model[i][0].y, sim.model[i][1].y) < minYPos) {
-        minYPos = Math.min(sim.model[i][0].y, sim.model[i][1].y)
+    for (var i = 0; i < sim.particles.length; i++) {
+      if (Math.min(sim.particles[i][0].y, sim.particles[i][1].y) < minYPos) {
+        minYPos = Math.min(sim.particles[i][0].y, sim.particles[i][1].y)
       }
     }
 

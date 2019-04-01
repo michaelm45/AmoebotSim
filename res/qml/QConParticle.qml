@@ -28,5 +28,6 @@ Entity {
     markDir: mark
     markerColor: color
   }
+
   components: [sphereTransformer, sphereMesh, material]
 }
