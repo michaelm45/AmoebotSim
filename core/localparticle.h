@@ -8,26 +8,27 @@ class LocalParticle : public Particle {
  public:
   // Constructs a new particle with a node position for its head, a global
   // compass direction from its head to its tail (-1 if contracted), and an
-  // offset for its local compass.
+  // orientation for its local compass.
   LocalParticle(const Node& head, int globalTailDir, const int orientation);
 
   // Returns the local direction of the tail relative to the head, (-1 if
   // contracted)
   int tailDir() const;
 
-  // Functions for converting port (edge) labels to local directions. labelToDir
-  // returns the local direction the edge with the given label points to.
-  // labelToDirAfterExpansion returns the local direction the edge with the
-  // given label would point to after an expansion in the given local direction.
+  // Functions for converting adjacent particle labels to local directions.
+  // labelToDir returns the local direction the edge with the given label points
+  // to. labelToDirAfterExpansion returns the local direction the particles with the
+  // the given label would point to after an expansion in the given local
+  // direction.
   int labelToDir(int label) const;
   int labelToDirAfterExpansion(int label, int expansionDir) const;
 
   // Functions for accessing labels specifically indicent to the head or tail.
-  // headLabels (respectively, tailLabels) returns a vector of labels of edges
-  // incident to the particle's head (respectively, tail). isHeadLabel (resp.,
-  // isTailLabel) checks whether the given label is a head (resp., tail) label.
-  // dirToHeadLabel (resp., dirToTailLabel) returns the head (resp., tail) label
-  // of the edge pointing in the given local direction. These conversions will
+  // headLabels (respectively, tailLabels) returns a vector of labels of
+  // particles incident to the particle's head (respectively, tail). isHeadLabel
+  // (resp., isTailLabel) checks whether the given label is a head (resp., tail)
+  // label. dirToHeadLabel (resp., dirToTailLabel) returns the head (resp., tail)
+  // label of the particle in the given local direction. These conversions will
   // fail on an expanded particle if dirToHeadLabel (resp., dirToTailLabel) is
   // called with the local direction from head to tail (resp., tail to head), as
   // the edge connecting the head and tail is not labelled.
@@ -48,7 +49,7 @@ class LocalParticle : public Particle {
   int dirToTailLabelAfterExpansion(int dir, int expansionDir) const;
 
   // labelToGlobalDir returns the global direction the edge with the given label
-  // points to. labelOfNbrNodeInGlobalDir returns the label of the edge that
+  // points to. labelOfNbrNodeInGlobalDir returns the label of the particle that
   // connects the particle to given node (fails if the specified node is not in
   // the particle's neighborhood).
   int labelToGlobalDir(int label) const;
@@ -60,7 +61,9 @@ class LocalParticle : public Particle {
   Node occupiedNodeIncidentToLabel(int label) const;
   Node nbrNodeReachedViaLabel(int label) const;
 
-  // Functions for converting between local and global compass directions.
+  // localToGlobalDir takes in a local direction and returns the corresponding
+  // global direction. globalToLocalDir takes a global direction and returns
+  // the local direction corresponding to that globalDir.
   int localToGlobalDir(int localDir) const;
   int globalToLocalDir(int globalDir) const;
 
@@ -88,23 +91,28 @@ class LocalParticle : public Particle {
   // local directions on that hexagonal layer.
   const int orientation;
 
-  // Function to return local labeling scheme based on orientation.
+  // labelMapping takes in a vector that represents the local compass
+  // configuration of a particle after applying rotation and/or flip on the
+  // L0 lattice then maps the compass configuration values to the correct
+  // lattice based on the particle's orientation.
   std::vector<int> labelMapping(std::vector<int> basisVector) const;
 
-  // Function to calculate opposite labels in contracted and expanded particles,
+  // Calculate opposite labels in contracted and expanded particles,
   int oppositeLabel(int label) const;
 
   // Function to calculate opposite directions.
   int oppositeDir(int dir) const;
 
-  // Function to map local expansionDirections in different lattices to the
-  // correct local label.
+  // Function to map expansionDirections in L0 to the correct local expansion
+  // in its local compass configurations.
   int mappedExpansion(int expandDir) const;
 
-  // Function to map a local label to global labeling scheme.
+  // Function to map a label in L0 to the correct local local
+  // in its local compass configurations.
   int mappedLabel(int label) const;
 
-  // Function to map a local direction to global direction.
+  // Function to map a local dir in L0 to the correct local dir
+  // in its local compass configurations.
   int mappedDir(int dir) const;
 
   // Functions to calculate the labels adjacent to the head of expanded
