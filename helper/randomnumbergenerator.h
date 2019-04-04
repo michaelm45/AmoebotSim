@@ -24,10 +24,10 @@ class RandomNumberGenerator {
 
 inline RandomNumberGenerator::RandomNumberGenerator() {
   static bool initialized = false;
-  if(!initialized) {
+  if (!initialized) {
     uint32_t seed;
     std::random_device device;
-    if(device.entropy() <= 0) {
+    if (device.entropy() <= 0) {
       auto duration = std::chrono::high_resolution_clock::now() -
                       std::chrono::high_resolution_clock::time_point::min();
       seed = duration.count();
