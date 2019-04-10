@@ -6,10 +6,10 @@ Entity {
   property var edges
   property vector3d start: edges[0]
   property vector3d end: edges[1]
-  property real visibility: 0.4
+  property real visibility: 0.85
   property real radius_: 0.1
 
-  // Render the cylinder connecting the head and tail nodes.
+  // Render the cylinder connecting the adjacent nodes.
   property real dX: (start.x - end.x)
   property real dY: (start.y - end.y)
   property real dZ: (start.z - end.z)
