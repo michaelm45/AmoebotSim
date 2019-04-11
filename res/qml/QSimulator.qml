@@ -5,6 +5,7 @@ import Qt3D.Extras 2.0
 import QtQuick 2.6
 
 Entity {
+  id: root
   Camera {
     id: camera
     projectionType: CameraLens.PerspectiveProjection
@@ -17,8 +18,11 @@ Entity {
     }
   }
 
-  OrbitCameraController {
+  QCameraController {
+    id: camController
     camera: camera
+    linearSpeed: 100
+    lookSpeed: 100
   }
 
   components: [
@@ -86,4 +90,5 @@ Entity {
     return minYPos
   }
 }
+
 
