@@ -41,16 +41,16 @@ Entity {
         camera.panAboutViewCenter(deltaLook * lookSpeed * 10)
       }
       else if (event.key === Qt.Key_Up) {
-        camera.translate(Qt.vector3d(0, (5) * deltaLinear * linearSpeed, 0))
+        camera.translate(Qt.vector3d(0, 5 * deltaLinear * linearSpeed, 0))
       }
       else if (event.key === Qt.Key_Down) {
-        camera.translate(Qt.vector3d(0, -(5) * deltaLinear * linearSpeed, 0))
+        camera.translate(Qt.vector3d(0, -5 * deltaLinear * linearSpeed, 0))
       }
       else if (event.key === Qt.Key_Right) {
-        camera.translate(Qt.vector3d((5) * deltaLinear * linearSpeed, 0, 0))
+        camera.translate(Qt.vector3d(5 * deltaLinear * linearSpeed, 0, 0))
       }
       else if (event.key === Qt.Key_Left) {
-        camera.translate(Qt.vector3d(-(5) * deltaLinear * linearSpeed, 0, 0))
+        camera.translate(Qt.vector3d(-5 * deltaLinear * linearSpeed, 0, 0))
       }
     }
   }
