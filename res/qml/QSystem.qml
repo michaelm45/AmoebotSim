@@ -2,11 +2,12 @@ import Qt3D.Core 2.0
 
 Entity {
   property var modelListing
+  signal inspectionText_(string text_)
 
   // NodeInstantiator passes each piece of the model to each particle delegate.
   NodeInstantiator {
     id: nodes
     model: modelListing
-    delegate: QParticle {}
+    delegate: QParticle { onInspectionText: inspectionText_(text)}
   }
 }

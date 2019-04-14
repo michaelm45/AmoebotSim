@@ -7,6 +7,8 @@ import QtQuick 2.6
 Entity {
   property bool in3DMode: false
 
+  signal inspectionText(string text)
+
   Camera {
     id: camera
     projectionType: CameraLens.PerspectiveProjection
@@ -52,6 +54,7 @@ Entity {
   QSystem {
     id: systemLink
     modelListing: sim.model
+    onInspectionText_: inspectionText(text_)
   }
 
   Connections {

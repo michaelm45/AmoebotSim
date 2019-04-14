@@ -15,6 +15,7 @@ Item {
     // Creates an entity that holds the particle system.
     QSimulator {
       id: simulator
+      onInspectionText: inspectionText.text = text
     }
   }
 
@@ -40,11 +41,34 @@ Item {
   }
 
   ColumnLayout {
+    id: columnFormat
     anchors.right: parent.right
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     anchors.margins: 10
     width: parent.width / 6
+
+    Rectangle {
+      id: displayText
+      implicitWidth: 300
+      implicitHeight: 100
+      border.width: 1
+      border.color: "#888"
+      radius: 4
+      color: "#eee"
+      opacity: 0.9
+      Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+
+      Text {
+        id: inspectionText
+        text: "Particle Information";
+        anchors.margins: 10
+        anchors.top: parent.top
+        anchors.left: parent.left
+        color: "#000"
+        Layout.fillWidth: true
+      }
+    }
 
     Button {
       id: cameraResetButton
