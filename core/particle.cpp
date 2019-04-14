@@ -43,5 +43,5 @@ int Particle::globalTailMarkDir() const {
 }
 
 QString Particle::inspectionText() const {
-  return "Overwrite Particle::inspectionText() to specify an inspection text.";
+  return "Overwrite Particle::inspectionText()";
 }

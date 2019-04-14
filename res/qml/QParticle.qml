@@ -19,7 +19,8 @@ Entity {
     id: particlePicker
     onClicked: {
       if (pick.modifiers === Qt.AltModifier) {
-        particle.inspectionText(particle)
+        particle.inspectionText(model.modelData[6])
+        console.log(particle)
       }
     }
   }
