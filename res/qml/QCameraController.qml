@@ -16,6 +16,9 @@ Entity {
   property bool in3DMode
   signal switchTo2DMode()
 
+  signal cameraPan(var pan)
+  signal cameraTilt(var tilt)
+
   KeyboardDevice {
     id: keyboardinput
   }
@@ -76,8 +79,14 @@ Entity {
     property real pan
     property real tilt
 
-    onPanChanged: camera.panAboutViewCenter(pan)
-    onTiltChanged: camera.tiltAboutViewCenter(tilt)
+    onPanChanged: {
+      camera.panAboutViewCenter(pan)
+      cameraPan(pan)
+    }
+    onTiltChanged: {
+      camera.tiltAboutViewCenter(tilt)
+      cameraTilt(tilt)
+    }
     onPressed: { lastPosition = Qt.point(mouse.x, mouse.y) }
     onWheel: { zoom(wheel.angleDelta.y * deltaZoom * linearSpeed) }
     onPositionChanged: {
