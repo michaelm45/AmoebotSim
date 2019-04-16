@@ -91,7 +91,7 @@ Entity {
       lastPosition = Qt.point(mouse.x, mouse.y)
     }
 
-    function zoom(zoomVal) {
+    function zoom (zoomVal) {
       if (zoomVal > 0 &&
               zoomDistance(camera.position, camera.viewCenter) < zoomLimit) {
         return
@@ -101,7 +101,7 @@ Entity {
                        Camera.DontTranslateViewCenter)
     }
 
-    function zoomDistance(cameraPos, viewCenterPos) {
+    function zoomDistance (cameraPos, viewCenterPos) {
       return viewCenterPos.minus(cameraPos).length()
     }
   }
