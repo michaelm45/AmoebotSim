@@ -5,9 +5,6 @@ import Qt3D.Input 2.0
 import QtQuick 2.6
 
 Entity {
-  signal cameraPan(var pan)
-  signal cameraTilt(var tilt)
-
   property Camera subCam: Camera {
     id: compassCam
     projectionType: CameraLens.PerspectiveProjection
@@ -19,9 +16,6 @@ Entity {
       setCamera()
     }
   }
-
-  onCameraPan: compassCam.panAboutViewCenter(pan)
-  onCameraTilt: compassCam.tiltAboutViewCenter(tilt)
 
   OrbitCameraController {
     camera: camera
