@@ -15,9 +15,9 @@ Entity {
     aspectRatio: 16/9
     nearPlane: 0.1
     farPlane: 500.0
-    upVector: Qt.vector3d(0.0, 0.0, 1.0)
-    viewCenter: Qt.vector3d(0,0,0)
-    position: Qt.vector3d(0,-2,0)
+    Component.onCompleted: {
+      setCamera()
+    }
   }
 
   onCameraPan: compassCam.panAboutViewCenter(pan)
@@ -116,4 +116,10 @@ Entity {
     },
     InputSettings {}
   ]
+
+  function setCamera() {
+    compassCam.upVector = Qt.vector3d(0.0, 0.0, 1.0)
+    compassCam.viewCenter = Qt.vector3d(0,0,0)
+    compassCam.position = Qt.vector3d(0,-2,0)
+  }
 }

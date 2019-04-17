@@ -33,13 +33,21 @@ Entity {
     onPressed: {
       if ((event.modifiers & Qt.ShiftModifier) && in3DMode) {
         if (event.key === Qt.Key_Up) {
-          camera.tiltAboutViewCenter(deltaLook * lookSpeed * 10)
+          var tilt = deltaLook * lookSpeed * 10
+          camera.tiltAboutViewCenter(tilt)
+          cameraTilt(tilt)
         } else if (event.key === Qt.Key_Down) {
-          camera.tiltAboutViewCenter(-deltaLook * lookSpeed * 10)
+          var tilt = -deltaLook * lookSpeed * 10
+          camera.tiltAboutViewCenter(tilt)
+          cameraTilt(tilt)
         } else if (event.key === Qt.Key_Right) {
-          camera.panAboutViewCenter(- deltaLook * lookSpeed * 10)
+          var pan = -deltaLook * lookSpeed * 10
+          camera.panAboutViewCenter(pan)
+          cameraPan(pan)
         } else if (event.key === Qt.Key_Left) {
-          camera.panAboutViewCenter(deltaLook * lookSpeed * 10)
+          var pan = deltaLook * lookSpeed * 10
+          camera.panAboutViewCenter(pan)
+          cameraPan(pan)
         }
       } else {
         if (event.key === Qt.Key_Up) {

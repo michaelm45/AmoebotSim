@@ -27,16 +27,21 @@ Item {
     anchors.margins: 10
 
     Button {
+      width: parent.width / 5
+      height: parent.height / 10
       id: cameraResetButton
       text: "Reset Camera"
       Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-      onClicked: simulator.resetCameraPosition()
+      onClicked: {
+        simulator.resetCameraPosition()
+        compass.setCamera()
+      }
     }
   }
 
   Scene3D {
-    width: 200
-    height: 200
+    width: parent.width / 5
+    height: parent.height / 5
     id: compassScene
     anchors.bottom: parent.bottom
     anchors.left: parent.left
@@ -47,4 +52,6 @@ Item {
       id: compass
     }
   }
+
+
 }
