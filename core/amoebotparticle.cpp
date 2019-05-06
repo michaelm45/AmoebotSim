@@ -159,7 +159,7 @@ bool AmoebotParticle::hasObjectNbr() const {
 }
 
 int AmoebotParticle::labelOfFirstObjectNbr(int startLabel) const {
-  const int labelLimit = isContracted() ? 6 : 20;
+  const int labelLimit = isContracted() ? 12 : 20;
   for (int labelOffset = 0; labelOffset < labelLimit; labelOffset++) {
     const int label = (startLabel + labelOffset) % labelLimit;
     if (hasObjectAtLabel(label)) {
