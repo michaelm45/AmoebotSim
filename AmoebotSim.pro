@@ -9,6 +9,7 @@ SOURCES += \
     helper/conversion.cpp \
     helper/utility.cpp
     core/localparticle.cpp
+    core/amoebotparticle.cpp
 
 HEADERS += \
     core/particle.h \
@@ -19,6 +20,7 @@ HEADERS += \
     helper/conversion.h \
     helper/utility.h
     core/localparticle.h
+    core/amoebotparticle.h
 
 RESOURCES += \
     res/qml.qrc
