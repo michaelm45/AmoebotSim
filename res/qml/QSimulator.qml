@@ -17,7 +17,8 @@ Entity {
     }
   }
 
-  OrbitCameraController {
+  QCameraController {
+    id: camController
     camera: camera
   }
 
