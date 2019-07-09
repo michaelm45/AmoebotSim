@@ -5,7 +5,7 @@ import Qt3D.Extras 2.0
 import QtQuick 2.6
 
 Entity {
-  property bool threeDimensionsEnabled: false
+  property bool in3DMode: false
 
   Camera {
     id: camera
@@ -22,8 +22,8 @@ Entity {
   QCameraController {
     id: camController
     camera: camera
-    enableThreeDimensions: threeDimensionsEnabled
-    onTwoDimensionalSwitch: twoDimensionalCamera()
+    in3DMode: in3DMode
+    onSwitchTo2DMode: set2DCamera()
   }
 
   components: [
@@ -55,14 +55,21 @@ Entity {
   }
 
   function resetCameraPosition() {
-    if (threeDimensionsEnabled) {
+    if (in3DMode) {
       camera.viewCenter = centerOfMass()
       camera.position = Qt.vector3d(camera.viewCenter.x, minYPosition() - 40,
                                     camera.viewCenter.z)
       camera.upVector = Qt.vector3d(0.0, 0.0, 1.0)
     } else {
-      twoDimensionalCamera()
+      set2DCamera()
     }
+  }
+
+  function set2DCamera() {
+    camera.viewCenter = centerOfMass()
+    camera.position = Qt.vector3d(camera.viewCenter.x, camera.viewCenter.y,
+                                  maxZPosition() + 40)
+    camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
   }
 
   function centerOfMass() {
@@ -70,8 +77,8 @@ Entity {
     var sumY = 0;
     var sumZ = 0;
 
+    // Calculates the sum of head and tail locations of all particles
     for (var i = 0; i < sim.model.length; i++) {
-      // Calculates the sum of head and tail locations of all particles
       sumX += sim.model[i][0].x + sim.model[i][1].x
       sumY += sim.model[i][0].y + sim.model[i][1].y
       sumZ += sim.model[i][0].z + sim.model[i][1].z
@@ -106,13 +113,6 @@ Entity {
     }
 
     return maxZPos
-  }
-
-  function twoDimensionalCamera() {
-    camera.viewCenter = centerOfMass()
-    camera.position = Qt.vector3d(camera.viewCenter.x, camera.viewCenter.y,
-                                                       maxZPosition() + 40)
-    camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
   }
 }
 
