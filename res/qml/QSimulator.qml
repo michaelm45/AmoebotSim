@@ -5,6 +5,8 @@ import Qt3D.Extras 2.0
 import QtQuick 2.6
 
 Entity {
+  property bool threeDimensionsEnabled: false
+
   Camera {
     id: camera
     projectionType: CameraLens.PerspectiveProjection
@@ -20,6 +22,8 @@ Entity {
   QCameraController {
     id: camController
     camera: camera
+    enableThreeDimensions: threeDimensionsEnabled
+    onTwoDimensionalSwitch: twoDimensionalCamera()
   }
 
   components: [
@@ -51,10 +55,14 @@ Entity {
   }
 
   function resetCameraPosition() {
-    camera.viewCenter = centerOfMass()
-    camera.position = Qt.vector3d(camera.viewCenter.x, minYPosition() - 40,
-                                  camera.viewCenter.z)
-    camera.upVector = Qt.vector3d(0.0, 0.0, 1.0)
+    if (threeDimensionsEnabled) {
+      camera.viewCenter = centerOfMass()
+      camera.position = Qt.vector3d(camera.viewCenter.x, minYPosition() - 40,
+                                    camera.viewCenter.z)
+      camera.upVector = Qt.vector3d(0.0, 0.0, 1.0)
+    } else {
+      twoDimensionalCamera()
+    }
   }
 
   function centerOfMass() {
@@ -85,6 +93,26 @@ Entity {
     }
 
     return minYPos
+  }
+
+  function maxZPosition() {
+    var maxZPos = Number.MIN_SAFE_INTEGER
+
+    // Finds the maximum z-position in the particle system.
+    for (var i = 0; i < sim.model.length; i++) {
+      if (Math.max(sim.model[i][0].z, sim.model[i][1].z) > maxZPos) {
+        maxZPos = Math.max(sim.model[i][0].z, sim.model[i][1].z)
+      }
+    }
+
+    return maxZPos
+  }
+
+  function twoDimensionalCamera() {
+    camera.viewCenter = centerOfMass()
+    camera.position = Qt.vector3d(camera.viewCenter.x, camera.viewCenter.y,
+                                                       maxZPosition() + 40)
+    camera.upVector = Qt.vector3d(0.0, 1.0, 0.0)
   }
 }
 

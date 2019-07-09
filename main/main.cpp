@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
   QGuiApplication app(argc, argv);
   QQuickView view;
   view.rootContext()->setContextProperty("sim", &sim);
-  view.resize(1000, 1000);
+  view.resize(800, 700);
   view.setResizeMode(QQuickView::SizeRootObjectToView);
   view.setSource(QUrl("qrc:///qml/main.qml"));
   view.show();
