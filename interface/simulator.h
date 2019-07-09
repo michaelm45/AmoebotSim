@@ -36,8 +36,8 @@ class Simulator : public QObject {
   void doPeriodically(std::function<void(void)> f, uint period);
   void callSystemChanged();
 
-  // Returns the list of all particle locations in the system in Cartesian
-  // coordinates. Primarily used by QML rendering.
+  // Returns the list of all particles' head/tail node locations in Cartesian
+  // coordinates, colors, and markers. Primarily used by QML rendering.
   QList<QVariant> getParticles() const;
 
   // Returns the list of edges between adjacent, occupied nodes to be displayed
@@ -46,9 +46,13 @@ class Simulator : public QObject {
   QList<QVariant> getEdges() const;
 
  private:
-  std::shared_ptr<System> _system;
+  // Simulator properties.
+  std::shared_ptr<System> _system;  // Shared pointer to particle system.
+  float _spacing = 2;  // Separation factor between rendered nodes.
+
+  // Returns the Cartesian position of a node marker belonging to the given node
+  // and pointing in the specified direction.
   std::vector<double> markerPosInDir(Node marked, int dir) const;
-  float separation = 2;
 };
 
 #endif  // AMOEBOTSIM_INTERFACE_SIMULATOR_H_

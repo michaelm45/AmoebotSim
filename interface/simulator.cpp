@@ -30,11 +30,8 @@ void Simulator::callSystemChanged() {
 }
 
 QList<QVariant> Simulator::getParticles() const {
-  QList<QVariant> model;
+  QList<QVariant> particleModel;
   std::vector<Particle> particles = _system->getParticles();
-
-  // For each particle, its head and tail positions are pushed back onto list of
-  // all particles' head and tail positions.
   for (Particle const &p : particles) {
     Node head = p.head;
     Node tail = p.tail();
@@ -54,18 +51,68 @@ QList<QVariant> Simulator::getParticles() const {
     std::vector<double> tailMarkerPos =
         markerPosInDir(tail, p.globalTailMarkDir());
 
-    QVariant particle
-        = QVariant({separation * Conversion::vectToQVect(headPos),
-                    separation * Conversion::vectToQVect(tailPos),
+    particleModel.push_back(
+          QVariant({_spacing * Conversion::vecToQVec3D(headPos),
+                    _spacing * Conversion::vecToQVec3D(tailPos),
                     headColor, tailColor,
-                    separation * Conversion::vectToQVect(headMarkerPos),
-                    separation * Conversion::vectToQVect(tailMarkerPos),
-                    p.inspectionText()});
-
-    model.push_back(QVariant(particle));
+                    _spacing * Conversion::vecToQVec3D(headMarkerPos),
+                    _spacing * Conversion::vecToQVec3D(tailMarkerPos),
+                    p.inspectionText()}));
   }
 
-  return model;
+  return particleModel;
+}
+
+QList<QVariant> Simulator::getEdges() const {
+  QList<QVariant> edgeModel;
+  std::vector<Particle> particles = _system->getParticles();
+  for (Particle const &p : particles) {
+    std::vector<double> head =
+        Conversion::cartesianPos({p.head.x, p.head.y, p.head.z});
+    std::vector<double> tail =
+        Conversion::cartesianPos({p.tail().x, p.tail().y, p.tail().z});
+
+    /* Some of following functions have not been implemented yet but will be
+     * once AmoebotParticle is finished. I provide the more efficient code in
+     * comments in order to ensure the program compiles.
+     *
+     * for (int dir = 0; dir < 12; ++dir) {
+     *   if (p.hasNbrAtLabel(dir)) {
+     *     Particle q = p.nbrAtLabel(dir);
+     *     ...
+     *   }
+     * }
+    */
+    for (Particle const &q : particles) {
+      std::vector<double> qHead =
+          Conversion::cartesianPos({q.head.x, q.head.y, q.head.z});
+      std::vector<double> qTail =
+          Conversion::cartesianPos({q.tail().x, q.tail().y, q.tail().z});
+
+      if (Utility::distance3D(head, qHead) <= 1) {
+        edgeModel.push_back(
+              QVariant({_spacing * Conversion::vecToQVec3D(head),
+                        _spacing * Conversion::vecToQVec3D(qHead)}));
+      }
+      if (Utility::distance3D(head, qTail) <= 1) {
+        edgeModel.push_back(
+              QVariant({_spacing * Conversion::vecToQVec3D(head),
+                        _spacing * Conversion::vecToQVec3D(qTail)}));
+      }
+      if (Utility::distance3D(tail, qHead) <= 1) {
+        edgeModel.push_back(
+              QVariant({_spacing * Conversion::vecToQVec3D(tail),
+                        _spacing * Conversion::vecToQVec3D(qHead)}));
+      }
+      if (Utility::distance3D(tail, qTail) <= 1) {
+        edgeModel.push_back(
+              QVariant({_spacing * Conversion::vecToQVec3D(tail),
+                        _spacing * Conversion::vecToQVec3D(qTail)}));
+      }
+    }
+  }
+
+  return edgeModel;
 }
 
 std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
@@ -83,58 +130,6 @@ std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
   } else {
     return {0,0,0};
   }
-}
-
-QList<QVariant> Simulator::getEdges() const {
-  QList<QVariant> edges;
-  std::vector<Particle> particles = _system->getParticles();
-  for (Particle const &p : particles) {
-    std::vector<double> head =
-        Conversion::cartesianPos({p.head.x, p.head.y, p.head.z});
-    std::vector<double> tail =
-        Conversion::cartesianPos({p.tail().x, p.tail().y, p.tail().z});
-
-/* Some of following functions have not been implemented yet but will be
- * once AmoebotParticle is finished. I provide the more efficient code in
- * comments in order to ensure the program compiles.
- *
- * for (int dir = 0; dir < 12; ++dir) {
- *   if (p.hasNbrAtLabel(dir)) {
- *     Particle q = p.nbrAtLabel(dir);
- *     ...
- *   }
- * }
-*/
-    for (Particle const &q : particles) {
-      std::vector<double> qHead =
-          Conversion::cartesianPos({q.head.x, q.head.y, q.head.z});
-      std::vector<double> qTail =
-          Conversion::cartesianPos({q.tail().x, q.tail().y, q.tail().z});
-
-      if (Utility::distance3D(head, qHead) <= 1) {
-        edges.push_back(
-              QVariant({separation * Conversion::vecToQVec3D(head),
-                        separation * Conversion::vecToQVec3D(qHead)}));
-      }
-      if (Utility::distance3D(head, qTail) <= 1) {
-        edges.push_back(
-              QVariant({separation * Conversion::vecToQVec3D(head),
-                        separation * Conversion::vecToQVec3D(qTail)}));
-      }
-      if (Utility::distance3D(tail, qHead) <= 1) {
-        edges.push_back(
-              QVariant({separation * Conversion::vecToQVec3D(tail),
-                        separation * Conversion::vecToQVec3D(qHead)}));
-      }
-      if (Utility::distance3D(tail, qTail) <= 1) {
-        edges.push_back(
-              QVariant({separation * Conversion::vecToQVec3D(tail),
-                        separation * Conversion::vecToQVec3D(qTail)}));
-      }
-    }
-  }
-
-  return edges;
 }
 
 
