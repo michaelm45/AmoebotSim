@@ -20,12 +20,12 @@
 
 class Simulator : public QObject {
   Q_OBJECT
-  Q_PROPERTY(QList<QVariant> particles READ getParticleSys NOTIFY particleSysSignal)
+  Q_PROPERTY(QList<QVariant> particles READ getParticles NOTIFY particleSignal)
   Q_PROPERTY(QList<QVariant> edges READ getEdges NOTIFY edgeSignal)
 
  signals:
   void systemChanged() const;
-  void particleSysSignal();
+  void particleSignal();
   void edgeSignal();
 
  public:
@@ -38,7 +38,7 @@ class Simulator : public QObject {
 
   // Returns the list of all particle locations in the system in Cartesian
   // coordinates. Primarily used by QML rendering.
-  QList<QVariant> getParticleSys() const;
+  QList<QVariant> getParticles() const;
 
   // Returns the list of edges between adjacent, occupied nodes to be displayed
   // in the scene. Each QVariant in the QList contains a QList of the start

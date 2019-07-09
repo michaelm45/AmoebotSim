@@ -18,8 +18,7 @@ class Conversion {
 
   // Function takes in vector of doubles. Forces vector to have size of 3.
   // Returns QVector3D with float positions.
-  static QVector3D vectToQVect3D(std::vector<double> vect);
-
+  static QVector3D vecToQVec3D(std::vector<double> vec);
 };
 
 #endif  // AMOEBOTSIM_HELPER_CONVERSION_H_

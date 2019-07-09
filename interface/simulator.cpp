@@ -29,13 +29,13 @@ void Simulator::callSystemChanged() {
   qDebug() << "system changed!";
 }
 
-QList<QVariant> Simulator::getParticleSys() const {
+QList<QVariant> Simulator::getParticles() const {
   QList<QVariant> model;
   std::vector<Particle> particles = _system->getParticles();
 
   // For each particle, its head and tail positions are pushed back onto list of
   // all particles' head and tail positions.
-  for (Particle p : particles) {
+  for (Particle const &p : particles) {
     Node head = p.head;
     Node tail = p.tail();
 
@@ -88,7 +88,7 @@ std::vector<double> Simulator::markerPosInDir(Node marked, int dir) const {
 QList<QVariant> Simulator::getEdges() const {
   QList<QVariant> edges;
   std::vector<Particle> particles = _system->getParticles();
-  for (Particle p: particles) {
+  for (Particle const &p : particles) {
     std::vector<double> head =
         Conversion::cartesianPos({p.head.x, p.head.y, p.head.z});
     std::vector<double> tail =
@@ -105,7 +105,7 @@ QList<QVariant> Simulator::getEdges() const {
  *   }
  * }
 */
-    for (Particle q: particles) {
+    for (Particle const &q : particles) {
       std::vector<double> qHead =
           Conversion::cartesianPos({q.head.x, q.head.y, q.head.z});
       std::vector<double> qTail =
@@ -113,23 +113,23 @@ QList<QVariant> Simulator::getEdges() const {
 
       if (Utility::distance3D(head, qHead) <= 1) {
         edges.push_back(
-              QVariant({separation * Conversion::vectToQVect3D(head),
-                        separation * Conversion::vectToQVect3D(qHead)}));
+              QVariant({separation * Conversion::vecToQVec3D(head),
+                        separation * Conversion::vecToQVec3D(qHead)}));
       }
       if (Utility::distance3D(head, qTail) <= 1) {
         edges.push_back(
-              QVariant({separation * Conversion::vectToQVect3D(head),
-                        separation * Conversion::vectToQVect3D(qTail)}));
+              QVariant({separation * Conversion::vecToQVec3D(head),
+                        separation * Conversion::vecToQVec3D(qTail)}));
       }
       if (Utility::distance3D(tail, qHead) <= 1) {
         edges.push_back(
-              QVariant({separation * Conversion::vectToQVect3D(tail),
-                        separation * Conversion::vectToQVect3D(qHead)}));
+              QVariant({separation * Conversion::vecToQVec3D(tail),
+                        separation * Conversion::vecToQVec3D(qHead)}));
       }
       if (Utility::distance3D(tail, qTail) <= 1) {
         edges.push_back(
-              QVariant({separation * Conversion::vectToQVect3D(tail),
-                        separation * Conversion::vectToQVect3D(qTail)}));
+              QVariant({separation * Conversion::vecToQVec3D(tail),
+                        separation * Conversion::vecToQVec3D(qTail)}));
       }
     }
   }

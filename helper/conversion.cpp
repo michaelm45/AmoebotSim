@@ -25,8 +25,8 @@ std::vector<double> Conversion::cartesianPos(std::vector<int> latticePos) {
   return {x, y, z};
 }
 
-QVector3D Conversion::vectToQVect3D(std::vector<double> vect) {
-  Q_ASSERT(vect.size() == 3);
-  return {static_cast<float>(vect[0]), static_cast<float>(vect[1]),
-          static_cast<float>(vect[2])};
+QVector3D Conversion::vecToQVec3D(std::vector<double> vec) {
+  Q_ASSERT(vec.size() == 3);
+  return {static_cast<float>(vec[0]), static_cast<float>(vec[1]),
+          static_cast<float>(vec[2])};
 }
