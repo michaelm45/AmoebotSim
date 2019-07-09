@@ -10,7 +10,11 @@ Entity {
   property real deltaZoom: 0.001
   property real linearSpeed: 100
   property real lookSpeed: 100
-  property real zoomLimit: 4
+  property real zoomLimit: 15
+
+  // Property and signal for switching between 2D and 3D camera modes.
+  property bool in3DMode
+  signal switchTo2DMode()
 
   KeyboardDevice {
     id: keyboardinput
@@ -24,30 +28,35 @@ Entity {
     sourceDevice: keyboardinput
     focus: true
     onPressed: {
-      if (event.key === Qt.Key_Up) {
-        if (event.modifiers & Qt.ShiftModifier) {
+      if ((event.modifiers & Qt.ShiftModifier) && in3DMode) {
+        if (event.key === Qt.Key_Up) {
           camera.tiltAboutViewCenter(deltaLook * lookSpeed * 10)
-        } else {
-          camera.translate(Qt.vector3d(0, 5 * deltaLinear * linearSpeed, 0))
-        }
-      } else if (event.key === Qt.Key_Down) {
-        if (event.modifiers & Qt.ShiftModifier) {
+        } else if (event.key === Qt.Key_Down) {
           camera.tiltAboutViewCenter(-deltaLook * lookSpeed * 10)
-        } else {
-          camera.translate(Qt.vector3d(0, -5 * deltaLinear * linearSpeed, 0))
-        }
-      } else if (event.key === Qt.Key_Right) {
-        if (event.modifiers & Qt.ShiftModifier) {
-          camera.panAboutViewCenter(-deltaLook * lookSpeed * 10)
-        } else {
-          camera.translate(Qt.vector3d(5 * deltaLinear * linearSpeed, 0, 0))
-        }
-      } else if (event.key === Qt.Key_Left) {
-        if (event.modifiers & Qt.ShiftModifier) {
+        } else if (event.key === Qt.Key_Right) {
+          camera.panAboutViewCenter(- deltaLook * lookSpeed * 10)
+        } else if (event.key === Qt.Key_Left) {
           camera.panAboutViewCenter(deltaLook * lookSpeed * 10)
-        } else {
+        }
+      } else {
+        if (event.key === Qt.Key_Up) {
+          camera.translate(Qt.vector3d(0, 5 * deltaLinear * linearSpeed, 0))
+        } else if (event.key === Qt.Key_Down) {
+          camera.translate(Qt.vector3d(0, -5 * deltaLinear * linearSpeed, 0))
+        } else if (event.key === Qt.Key_Right) {
+          camera.translate(Qt.vector3d(5 * deltaLinear * linearSpeed, 0, 0))
+        } else if (event.key === Qt.Key_Left) {
           camera.translate(Qt.vector3d(-5 * deltaLinear * linearSpeed, 0, 0))
         }
+      }
+
+      if (event.key === Qt.Key_2) {
+        if (in3DMode) {
+          switchTo2DMode()
+        }
+        controller.in3DMode = false
+      } else if (event.key === Qt.Key_3) {
+        controller.in3DMode = true
       }
     }
   }
@@ -72,14 +81,14 @@ Entity {
     onPressed: { lastPosition = Qt.point(mouse.x, mouse.y) }
     onWheel: { zoom(wheel.angleDelta.y * deltaZoom * linearSpeed) }
     onPositionChanged: {
-      if (mouse.buttons === 1) {  // Translate.
+      if (mouse.buttons === 1 || (mouse.buttons === 2 && !in3DMode)) {
         var rx = -(mouse.x - lastPosition.x) * deltaLinear * linearSpeed
         var ry = (mouse.y - lastPosition.y) * deltaLinear * linearSpeed
         camera.translate(Qt.vector3d(rx, ry, 0))
-      } else if (mouse.buttons === 2) {  // Pan & tilt.
+      } else if (mouse.buttons === 2 && in3DMode) {
         pan = -(mouse.x - lastPosition.x) * deltaLook * lookSpeed
         tilt = (mouse.y - lastPosition.y) * deltaLook * lookSpeed
-      } else if (mouse.buttons === 3) {  // Zoom.
+      } else if (mouse.buttons === 3) {
         zoom((mouse.y - lastPosition.y) * deltaZoom * linearSpeed)
       }
 
