@@ -40,11 +40,10 @@ class Simulator : public QObject {
   // coordinates. Primarily used by QML rendering.
   QList<QVariant> getParticleSys() const;
 
-  // Returns the list of edges between adjacent nodes to be displayed in
-  // the scene. Each QVariant in the QList contains a QList of the start and end
-  // locations of the edge.
+  // Returns the list of edges between adjacent, occupied nodes to be displayed
+  // in the scene. Each QVariant in the QList contains a QList of the start
+  // and end locations of the edge.
   QList<QVariant> getEdges() const;
-
 
  private:
   std::shared_ptr<System> _system;

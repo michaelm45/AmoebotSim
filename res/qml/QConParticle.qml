@@ -20,8 +20,8 @@ Entity {
   }
 
   PhongMaterial {
-    ambient: color
     id: material
+    ambient: color
   }
 
   QMarker {

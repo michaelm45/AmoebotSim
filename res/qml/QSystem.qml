@@ -16,7 +16,8 @@ Entity {
     }
   }
 
-  // edges passes each edge to be rendered to each QEdge delegate.
+  // Assigns and manages each lattice edge between adjacent, occupied particles
+  // as a QEdge delegate.
   NodeInstantiator {
     id: edges
     model: modelEdges
