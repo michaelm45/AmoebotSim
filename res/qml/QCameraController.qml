@@ -24,33 +24,30 @@ Entity {
     sourceDevice: keyboardinput
     focus: true
     onPressed: {
-      if ((event.key === Qt.Key_Up) &&
-              (event.modifiers & Qt.ShiftModifier)) {
-        camera.tiltAboutViewCenter(deltaLook * lookSpeed * 10)
-      }
-      else if ((event.key === Qt.Key_Down) &&
-               (event.modifiers & Qt.ShiftModifier)) {
-        camera.tiltAboutViewCenter(-deltaLook * lookSpeed * 10)
-      }
-      else if ((event.key === Qt.Key_Right) &&
-               (event.modifiers & Qt.ShiftModifier)) {
-        camera.panAboutViewCenter(- deltaLook * lookSpeed * 10)
-      }
-      else if ((event.key === Qt.Key_Left) &&
-               (event.modifiers & Qt.ShiftModifier)) {
-        camera.panAboutViewCenter(deltaLook * lookSpeed * 10)
-      }
-      else if (event.key === Qt.Key_Up) {
-        camera.translate(Qt.vector3d(0, 5 * deltaLinear * linearSpeed, 0))
-      }
-      else if (event.key === Qt.Key_Down) {
-        camera.translate(Qt.vector3d(0, -5 * deltaLinear * linearSpeed, 0))
-      }
-      else if (event.key === Qt.Key_Right) {
-        camera.translate(Qt.vector3d(5 * deltaLinear * linearSpeed, 0, 0))
-      }
-      else if (event.key === Qt.Key_Left) {
-        camera.translate(Qt.vector3d(-5 * deltaLinear * linearSpeed, 0, 0))
+      if (event.key === Qt.Key_Up) {
+        if (event.modifiers & Qt.ShiftModifier) {
+          camera.tiltAboutViewCenter(deltaLook * lookSpeed * 10)
+        } else {
+          camera.translate(Qt.vector3d(0, 5 * deltaLinear * linearSpeed, 0))
+        }
+      } else if (event.key === Qt.Key_Down) {
+        if (event.modifiers & Qt.ShiftModifier) {
+          camera.tiltAboutViewCenter(-deltaLook * lookSpeed * 10)
+        } else {
+          camera.translate(Qt.vector3d(0, -5 * deltaLinear * linearSpeed, 0))
+        }
+      } else if (event.key === Qt.Key_Right) {
+        if (event.modifiers & Qt.ShiftModifier) {
+          camera.panAboutViewCenter(-deltaLook * lookSpeed * 10)
+        } else {
+          camera.translate(Qt.vector3d(5 * deltaLinear * linearSpeed, 0, 0))
+        }
+      } else if (event.key === Qt.Key_Left) {
+        if (event.modifiers & Qt.ShiftModifier) {
+          camera.panAboutViewCenter(deltaLook * lookSpeed * 10)
+        } else {
+          camera.translate(Qt.vector3d(-5 * deltaLinear * linearSpeed, 0, 0))
+        }
       }
     }
   }
@@ -65,44 +62,36 @@ Entity {
   // center. Left & Right click + drag [or mouse wheel] zooms in/out
   MouseHandler {
     id: mouseHandle
-    property point lastPosition;
-    property real pan;
-    property real tilt;
     sourceDevice: mouseDevice
+    property point lastPosition
+    property real pan
+    property real tilt
 
-    onPanChanged: camera.panAboutViewCenter(pan);
-    onTiltChanged: camera.tiltAboutViewCenter(tilt);
-    onPressed: { lastPosition = Qt.point(mouse.x, mouse.y); }
-    onWheel: { zoom(wheel.angleDelta.y * deltaZoom * linearSpeed); }
-
+    onPanChanged: camera.panAboutViewCenter(pan)
+    onTiltChanged: camera.tiltAboutViewCenter(tilt)
+    onPressed: { lastPosition = Qt.point(mouse.x, mouse.y) }
+    onWheel: { zoom(wheel.angleDelta.y * deltaZoom * linearSpeed) }
     onPositionChanged: {
-      if (mouse.buttons === 1) {
-        var rx = -(mouse.x - lastPosition.x) * deltaLinear * linearSpeed;
-        var ry = (mouse.y - lastPosition.y) * deltaLinear * linearSpeed;
+      if (mouse.buttons === 1) {  // Translate.
+        var rx = -(mouse.x - lastPosition.x) * deltaLinear * linearSpeed
+        var ry = (mouse.y - lastPosition.y) * deltaLinear * linearSpeed
         camera.translate(Qt.vector3d(rx, ry, 0))
-      } else if (mouse.buttons === 2) {
-        pan = -(mouse.x - lastPosition.x) * deltaLook * lookSpeed;
-        tilt = (mouse.y - lastPosition.y) * deltaLook * lookSpeed;
-      } else if (mouse.buttons === 3) {
-        var zoomVal = (mouse.y - lastPosition.y) * deltaZoom * linearSpeed
-        zoom(zoomVal)
+      } else if (mouse.buttons === 2) {  // Pan & tilt.
+        pan = -(mouse.x - lastPosition.x) * deltaLook * lookSpeed
+        tilt = (mouse.y - lastPosition.y) * deltaLook * lookSpeed
+      } else if (mouse.buttons === 3) {  // Zoom.
+        zoom((mouse.y - lastPosition.y) * deltaZoom * linearSpeed)
       }
 
       lastPosition = Qt.point(mouse.x, mouse.y)
     }
 
-    function zoom (zoomVal) {
-      if (zoomVal > 0 &&
-              zoomDistance(camera.position, camera.viewCenter) < zoomLimit) {
-        return
+    function zoom(zoomVal) {
+      var zoomDistance = camera.viewCenter.minus(camera.position).length()
+      if (zoomVal <= 0 || zoomDistance >= zoomLimit) {
+        camera.translate(Qt.vector3d(0, 0, zoomVal),
+                         Camera.DontTranslateViewCenter)
       }
-
-      camera.translate(Qt.vector3d(0, 0, zoomVal),
-                       Camera.DontTranslateViewCenter)
-    }
-
-    function zoomDistance (cameraPos, viewCenterPos) {
-      return viewCenterPos.minus(cameraPos).length()
     }
   }
 }
