@@ -54,6 +54,18 @@ Entity {
     modelListing: sim.model
   }
 
+  Connections {
+    target: sim
+    onSystemChanged: {
+        refreshSystem()
+    }
+  }
+
+  Timer {
+    interval: 5000; running: true; repeat: true
+    onTriggered: refreshSystem()
+  }
+
   function resetCameraPosition() {
     if (in3DMode) {
       camera.viewCenter = centerOfMass()
@@ -113,6 +125,10 @@ Entity {
     }
 
     return maxZPos
+  }
+
+  function refreshSystem() {
+    systemLink.modelListing = sim.model
   }
 }
 

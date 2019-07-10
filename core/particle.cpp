@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "core/particle.h"
 #include "helper/conversion.h"
 
@@ -27,11 +29,13 @@ Node Particle::tail() const {
 }
 
 int Particle::headMarkColor() const {
-  return 0x000000;
+  int colors[]{0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF};
+  return colors[rand() % 7];
 }
 
 int Particle::tailMarkColor() const {
-  return 0x000000;
+  int colors[]{0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF};
+  return colors[rand() % 7];
 }
 
 int Particle::globalHeadMarkDir() const {

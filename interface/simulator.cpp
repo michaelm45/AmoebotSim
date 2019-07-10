@@ -9,6 +9,7 @@ Simulator::Simulator() {
 }
 
 QList<QVariant> Simulator::getModel() const {
+  _system->refreshSystem();
   QList<QVariant> model;
   std::vector<Particle> particles = _system->getParticles();
   float separation = 2;

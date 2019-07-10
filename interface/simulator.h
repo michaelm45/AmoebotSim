@@ -16,6 +16,7 @@ class Simulator : public QObject {
 
  signals:
   void modelSignal();
+  void systemChanged() const;
 
  public:
   // Default constructor (currently creates a System shared pointer).
