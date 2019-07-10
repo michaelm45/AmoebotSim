@@ -15,36 +15,19 @@ Item {
     // Creates an entity that holds the particle system.
     QSimulator {
       id: simulator
-      on_CameraPan: compass.subCam.panAboutViewCenter(_pan)
-      on_CameraTilt: compass.subCam.tiltAboutViewCenter(_tilt)
+      on_CameraPan: compass.camera.panAboutViewCenter(_pan)
+      on_CameraTilt: compass.camera.tiltAboutViewCenter(_tilt)
     }
   }
 
-  ColumnLayout {
-    anchors.right: parent.right
-    anchors.top: parent.top
+  // Renders an XYZ compass that rotates with the particle system.
+  Scene3D {
+    id: compassScene
+    width: parent.width / 6
+    height: parent.height / 6
+    anchors.left: parent.left
     anchors.bottom: parent.bottom
     anchors.margins: 10
-
-    Button {
-      width: parent.width / 5
-      height: parent.height / 10
-      id: cameraResetButton
-      text: "Reset Camera"
-      Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-      onClicked: {
-        simulator.resetCameraPosition()
-        compass.setCamera()
-      }
-    }
-  }
-
-  Scene3D {
-    width: parent.width / 5
-    height: parent.height / 5
-    id: compassScene
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
     cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
     aspects: ["input", "logic"]
 
@@ -53,5 +36,23 @@ Item {
     }
   }
 
+  ColumnLayout {
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.margins: 10
+    width: parent.width / 6
 
+    Button {
+      id: cameraResetButton
+      width: parent.width
+      height: parent.height / 10      
+      text: "Reset Camera"
+      Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+      onClicked: {
+        simulator.resetCameraPosition()
+        compass.setCamera()
+      }
+    }
+  }
 }
