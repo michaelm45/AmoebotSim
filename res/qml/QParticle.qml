@@ -5,7 +5,8 @@ import Qt3D.Render 2.12
 Entity {
   id: particle
   property bool expand: model.modelData[0] !== model.modelData[1]
-  signal inspectionText(string text)
+
+  signal inspected(string text)
 
   Component.onCompleted: {
     var component = expand ? Qt.createComponent("QExpParticle.qml")
@@ -19,7 +20,7 @@ Entity {
     id: particlePicker
     onClicked: {
       if (pick.modifiers === Qt.AltModifier) {
-        particle.inspectionText(model.modelData[6])
+        particle.inspected(model.modelData[6])
         console.log(particle)
       }
     }

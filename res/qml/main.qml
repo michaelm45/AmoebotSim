@@ -15,7 +15,6 @@ Item {
     // Creates an entity that holds the particle system.
     QSimulator {
       id: simulator
-      onInspectionText: inspectionText.text = text
     }
   }
 
@@ -68,6 +67,10 @@ Item {
         wrapMode: Text.Wrap
         color: "#000"
         text: "Particle Information";
+        Connections {
+          target: simulator.system
+          onInspectionText: inspectionText.text = text
+        }
       }
     }
 
