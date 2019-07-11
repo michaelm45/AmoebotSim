@@ -6,8 +6,6 @@ import QtQuick 2.6
 
 Entity {
   property bool in3DMode: false
-  signal _cameraPan(var _pan)
-  signal _cameraTilt(var _tilt)
 
   Camera {
     id: camera
@@ -21,13 +19,11 @@ Entity {
     }
   }
 
-  QCameraController {
+  property QCameraController camController: QCameraController {
     id: camController
     camera: camera
     in3DMode: in3DMode
     onSwitchTo2DMode: set2DCamera()
-    onCameraPan: _cameraPan(pan)
-    onCameraTilt: _cameraTilt(tilt)
   }
 
   components: [

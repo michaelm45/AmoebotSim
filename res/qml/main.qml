@@ -15,8 +15,6 @@ Item {
     // Creates an entity that holds the particle system.
     QSimulator {
       id: simulator
-      on_CameraPan: compass.camera.panAboutViewCenter(_pan)
-      on_CameraTilt: compass.camera.tiltAboutViewCenter(_tilt)
     }
   }
 
@@ -33,6 +31,11 @@ Item {
 
     QCompass {
       id: compass
+      Connections {
+        target: simulator.camController
+        onCameraPan: compass.camera.panAboutViewCenter(pan)
+        onCameraTilt: compass.camera.tiltAboutViewCenter(tilt)
+      }
     }
   }
 
