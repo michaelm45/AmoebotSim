@@ -49,24 +49,25 @@ Item {
     width: parent.width / 6
 
     Rectangle {
-      id: displayText
-      implicitWidth: 300
-      implicitHeight: 100
+      id: inspectionTextBox
+      implicitWidth: parent.width
+      implicitHeight: parent.height / 5
+      Layout.alignment: Qt.AlignTop
       border.width: 1
       border.color: "#888"
       radius: 4
       color: "#eee"
-      opacity: 0.9
-      Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+      opacity: 0.8
 
       Text {
         id: inspectionText
-        text: "Particle Information";
         anchors.margins: 10
         anchors.top: parent.top
         anchors.left: parent.left
+        width: parent.width
+        wrapMode: Text.Wrap
         color: "#000"
-        Layout.fillWidth: true
+        text: "Particle Information";
       }
     }
 
