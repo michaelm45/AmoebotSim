@@ -16,8 +16,6 @@ class System {
 
   std::vector<Particle> getParticles();
 
-  void refreshSystem();
-
  private:
   std::vector<Particle> _particles;
 };

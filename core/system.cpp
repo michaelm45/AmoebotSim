@@ -1,24 +1,11 @@
 #include "core/system.h"
 
 System::System() {
-  refreshSystem();
+  _particles = {Particle(Node(0, 0, 0), -1), Particle(Node(0, 2, 0), 0),
+                Particle(Node(1, 0, 1), 6), Particle(Node(0, -3, 0), -1),
+                Particle(Node(3, -1, 0), 8)};
 }
 
 std::vector<Particle> System::getParticles() {
   return _particles;
-}
-
-void System::refreshSystem() {
-  _particles.clear();
-  srand (time(0));
-  int n = 100;
-  for (int i = 0; i< n; ++i) {
-    int contract = (rand() % 2) - 1;
-    int dir = (rand() % 12);
-    dir = contract != -1 ? dir : -1;
-    int x = (rand() % 30) - 15;
-    int y = (rand() % 30) - 15;
-    int z = (rand() % 30) - 15;
-    _particles.push_back(Particle(Node(x, y, z), dir));
-  }
 }

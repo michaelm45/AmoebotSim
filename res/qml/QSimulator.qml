@@ -56,14 +56,7 @@ Entity {
 
   Connections {
     target: sim
-    onSystemChanged: {
-        refreshSystem()
-    }
-  }
-
-  Timer {
-    interval: 5000; running: true; repeat: true
-    onTriggered: refreshSystem()
+    onSystemChanged: refreshSystem()
   }
 
   function resetCameraPosition() {

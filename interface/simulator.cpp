@@ -6,10 +6,29 @@
 
 Simulator::Simulator() {
   _system = std::make_shared<System>();
+
+  // TODO: Remove after systemChanged() is integrated.
+  std::function<void(void)> f(std::bind(&Simulator::callSystemChanged, this));
+  doPeriodically(f, 3000);
+}
+
+// TODO: Remove after systemChanged() is integrated.
+void Simulator::doPeriodically(std::function<void(void)> f, uint period) {
+  std::thread([f, period]() {
+    while (true) {
+      f();
+      std::this_thread::sleep_for(std::chrono::milliseconds(period));
+    }
+  }).detach();
+}
+
+// TODO: Remove after systemChanged() is integrated.
+void Simulator::callSystemChanged() {
+  systemChanged();
+  qDebug() << "system changed!";
 }
 
 QList<QVariant> Simulator::getModel() const {
-  _system->refreshSystem();
   QList<QVariant> model;
   std::vector<Particle> particles = _system->getParticles();
   float separation = 2;
@@ -25,17 +44,22 @@ QList<QVariant> Simulator::getModel() const {
     std::vector<double> tailPos
         = Conversion::cartesianPos({tail.x, tail.y, tail.z});
 
-    QColor headColor = QColor::fromRgb(Conversion::intToUInt(p.headMarkColor()));
-    QColor tailColor = QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()));
+    QColor headColor
+        = QColor::fromRgb(Conversion::intToUInt(p.headMarkColor()));
+    QColor tailColor
+        = QColor::fromRgb(Conversion::intToUInt(p.tailMarkColor()));
 
-    std::vector<double> headMarkerPos = markerPosInDir(head, p.globalHeadMarkDir());
-    std::vector<double> tailMarkerPos = markerPosInDir(tail, p.globalTailMarkDir());
+    std::vector<double> headMarkerPos
+        = markerPosInDir(head, p.globalHeadMarkDir());
+    std::vector<double> tailMarkerPos
+        = markerPosInDir(tail, p.globalTailMarkDir());
 
-    QVariant particle = QVariant({separation * Conversion::vectToQVect(headPos),
-                                  separation * Conversion::vectToQVect(tailPos),
-                                  headColor, tailColor,
-                                  separation * Conversion::vectToQVect(headMarkerPos),
-                                  separation * Conversion::vectToQVect(tailMarkerPos)});
+    QVariant particle
+        = QVariant({separation * Conversion::vectToQVect(headPos),
+                    separation * Conversion::vectToQVect(tailPos),
+                    headColor, tailColor,
+                    separation * Conversion::vectToQVect(headMarkerPos),
+                    separation * Conversion::vectToQVect(tailMarkerPos)});
 
     model.push_back(particle);
   }
