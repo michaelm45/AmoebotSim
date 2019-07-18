@@ -21,6 +21,7 @@ Entity {
     onClicked: {
       if (pick.modifiers === Qt.AltModifier) {
         particle.inspected(model.modelData[6])
+        // TODO: Remove once particles overwrite their own inspectionTexts.
         console.log(particle)
       }
     }
