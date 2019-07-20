@@ -1,4 +1,5 @@
 ﻿#include <QColor>
+#include <QtMath>
 #include <QVector3D>
 
 #include "helper/conversion.h"
@@ -89,22 +90,22 @@ QList<QVariant> Simulator::getEdges() const {
       std::vector<double> qTail =
           Conversion::cartesianPos({q.tail().x, q.tail().y, q.tail().z});
 
-      if (Utility::distance3D(head, qHead) <= 1) {
+      if (Utility::distance3D(head, qHead) <= sqrt(159)/12) {
         edgeModel.push_back(
               QVariant({_spacing * Conversion::vecToQVec3D(head),
                         _spacing * Conversion::vecToQVec3D(qHead)}));
       }
-      if (Utility::distance3D(head, qTail) <= 1) {
+      if (Utility::distance3D(head, qTail) <= sqrt(159)/12) {
         edgeModel.push_back(
               QVariant({_spacing * Conversion::vecToQVec3D(head),
                         _spacing * Conversion::vecToQVec3D(qTail)}));
       }
-      if (Utility::distance3D(tail, qHead) <= 1) {
+      if (Utility::distance3D(tail, qHead) <= sqrt(159)/12) {
         edgeModel.push_back(
               QVariant({_spacing * Conversion::vecToQVec3D(tail),
                         _spacing * Conversion::vecToQVec3D(qHead)}));
       }
-      if (Utility::distance3D(tail, qTail) <= 1) {
+      if (Utility::distance3D(tail, qTail) <= sqrt(159)/12) {
         edgeModel.push_back(
               QVariant({_spacing * Conversion::vecToQVec3D(tail),
                         _spacing * Conversion::vecToQVec3D(qTail)}));

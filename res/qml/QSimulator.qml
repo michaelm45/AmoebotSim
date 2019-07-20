@@ -122,7 +122,8 @@ Entity {
   }
 
   function refreshSystem() {
-    systemLink.modelListing = sim.model
+    systemLink.modelParticles = sim.particles
+    systemLink.modelEdges = sim.edges
   }
 }
 
