@@ -6,7 +6,6 @@ Entity {
   property var edges
   property vector3d start: edges[0]
   property vector3d end: edges[1]
-  property real visibility: 0.85
   property real radius_: 0.1
 
   // Render the cylinder connecting the adjacent nodes.
@@ -35,9 +34,9 @@ Entity {
                                 Qt.vector3d(0, 1, 0), yRot)
   }
 
-  PhongAlphaMaterial {
+  PhongMaterial {
     id: material
-    alpha: visibility
+    ambient: "lightgrey"
   }
 
   components: [mesh, material, transform]
