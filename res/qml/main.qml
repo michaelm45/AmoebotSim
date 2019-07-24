@@ -40,11 +40,39 @@ Item {
   }
 
   ColumnLayout {
+    id: columnFormat
     anchors.right: parent.right
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     anchors.margins: 10
     width: parent.width / 6
+
+    Rectangle {
+      id: inspectionTextBox
+      implicitWidth: parent.width
+      implicitHeight: parent.height / 5
+      Layout.alignment: Qt.AlignTop
+      border.width: 1
+      border.color: "#888"
+      radius: 4
+      color: "#eee"
+      opacity: 0.8
+
+      Text {
+        id: inspectionText
+        anchors.margins: 10
+        anchors.top: parent.top
+        anchors.left: parent.left
+        width: parent.width
+        wrapMode: Text.Wrap
+        color: "#000"
+        text: "Particle Information";
+        Connections {
+          target: simulator.system
+          onInspectionText: inspectionText.text = text
+        }
+      }
+    }
 
     Button {
       id: cameraResetButton

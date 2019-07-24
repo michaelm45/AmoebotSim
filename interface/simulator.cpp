@@ -59,7 +59,8 @@ QList<QVariant> Simulator::getModel() const {
                     separation * Conversion::vectToQVect(tailPos),
                     headColor, tailColor,
                     separation * Conversion::vectToQVect(headMarkerPos),
-                    separation * Conversion::vectToQVect(tailMarkerPos)});
+                    separation * Conversion::vectToQVect(tailMarkerPos),
+                    p.inspectionText()});
 
     model.push_back(particle);
   }

@@ -41,3 +41,7 @@ int Particle::globalHeadMarkDir() const {
 int Particle::globalTailMarkDir() const {
   return -1;
 }
+
+QString Particle::inspectionText() const {
+  return "Overwrite Particle::inspectionText()";
+}

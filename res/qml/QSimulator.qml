@@ -49,7 +49,7 @@ Entity {
     ]
   }
 
-  QSystem {
+  property QSystem system : QSystem {
     id: systemLink
     modelListing: sim.model
   }

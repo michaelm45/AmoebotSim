@@ -27,6 +27,10 @@ class Particle {
   int virtual globalHeadMarkDir() const;
   int virtual globalTailMarkDir() const;
 
+  // Returns the string to be displayed when this particle is inspected; used
+  // to snapshot the current values of this particle's memory at runtime.
+  virtual QString inspectionText() const;
+
   // Returns the node occupied by the particle's tail. Returns the head node if
   // contracted, and otherwise returns the node in the global tail direction
   // from the head node.
