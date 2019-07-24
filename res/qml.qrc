@@ -8,5 +8,6 @@
         <file>qml/QExpParticle.qml</file>
         <file>qml/QMarker.qml</file>
         <file>qml/QCameraController.qml</file>
+        <file>qml/QCompass.qml</file>
     </qresource>
 </RCC>

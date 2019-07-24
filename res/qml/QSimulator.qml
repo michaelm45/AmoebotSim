@@ -19,7 +19,7 @@ Entity {
     }
   }
 
-  QCameraController {
+  property QCameraController camController: QCameraController {
     id: camController
     camera: camera
     in3DMode: in3DMode

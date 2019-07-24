@@ -16,6 +16,10 @@ Entity {
   property bool in3DMode
   signal switchTo2DMode()
 
+  // Signals for when the camera pans or tilts.
+  signal cameraPan(var pan)
+  signal cameraTilt(var tilt)
+
   KeyboardDevice {
     id: keyboardinput
   }
@@ -29,14 +33,20 @@ Entity {
     focus: true
     onPressed: {
       if ((event.modifiers & Qt.ShiftModifier) && in3DMode) {
+        var tilt = deltaLook * lookSpeed * 10
+        var pan = deltaLook * lookSpeed * 10
         if (event.key === Qt.Key_Up) {
-          camera.tiltAboutViewCenter(deltaLook * lookSpeed * 10)
+          camera.tiltAboutViewCenter(tilt)
+          cameraTilt(tilt)
         } else if (event.key === Qt.Key_Down) {
-          camera.tiltAboutViewCenter(-deltaLook * lookSpeed * 10)
+          camera.tiltAboutViewCenter(-tilt)
+          cameraTilt(-tilt)
         } else if (event.key === Qt.Key_Right) {
-          camera.panAboutViewCenter(- deltaLook * lookSpeed * 10)
+          camera.panAboutViewCenter(-pan)
+          cameraPan(-pan)
         } else if (event.key === Qt.Key_Left) {
-          camera.panAboutViewCenter(deltaLook * lookSpeed * 10)
+          camera.panAboutViewCenter(pan)
+          cameraPan(pan)
         }
       } else {
         if (event.key === Qt.Key_Up) {
@@ -76,8 +86,6 @@ Entity {
     property real pan
     property real tilt
 
-    onPanChanged: camera.panAboutViewCenter(pan)
-    onTiltChanged: camera.tiltAboutViewCenter(tilt)
     onPressed: { lastPosition = Qt.point(mouse.x, mouse.y) }
     onWheel: { zoom(wheel.angleDelta.y * deltaZoom * linearSpeed) }
     onPositionChanged: {
@@ -93,6 +101,14 @@ Entity {
       }
 
       lastPosition = Qt.point(mouse.x, mouse.y)
+    }
+    onPanChanged: {
+      camera.panAboutViewCenter(pan)
+      cameraPan(pan)
+    }
+    onTiltChanged: {
+      camera.tiltAboutViewCenter(tilt)
+      cameraTilt(tilt)
     }
 
     function zoom(zoomVal) {
