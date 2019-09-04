@@ -14,15 +14,15 @@ uint Conversion::intToUInt(int i) {
 }
 
 std::vector<double> Conversion::cartesianPos(std::vector<int> latticePos) {
-  int i = latticePos[0];
-  int j = latticePos[1];
-  int k = latticePos[2];
+  int x_l = latticePos[0];
+  int y_l = latticePos[1];
+  int z_l = latticePos[2];
 
-  double x = i + j/2.0 + k/2.0;
-  double y =  sqrt(3.0)/2.0 * j - sqrt(3.0)/4.0 * k;
-  double z =  sqrt(6.0)/3.0 * k;
+  double x_c = x_l + y_l/2.0 + z_l/2.0;
+  double y_c = sqrt(3.0)/2.0 * y_l - sqrt(3.0)/6.0 * z_l;
+  double z_c = sqrt(6.0)/3.0 * z_l;
 
-  return {x, y, z};
+  return {x_c, y_c, z_c};
 }
 
 QVector3D Conversion::vecToQVec3D(std::vector<double> vec) {
