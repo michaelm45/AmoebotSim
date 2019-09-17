@@ -7,6 +7,7 @@ Entity {
   property vector3d start: edges[0]
   property vector3d end: edges[1]
   property real radius_: 0.1
+  property bool expanded
 
   // Render the cylinder connecting the adjacent nodes.
   property real dX: (start.x - end.x)
@@ -36,7 +37,7 @@ Entity {
 
   PhongMaterial {
     id: material
-    ambient: "lightgrey"
+    ambient: expanded? "black" : "lightgrey"
   }
 
   components: [mesh, material, transform]

@@ -29,7 +29,7 @@ Entity {
   QEdge {
       start: headLocation
       end: tailLocation
-      visibility: 1
       radius_: 0.3
+      expanded: true
   }
 }
