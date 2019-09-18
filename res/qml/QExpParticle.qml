@@ -27,9 +27,9 @@ Entity {
 
   // Render connector between head and tail node.
   QEdge {
-      start: headLocation
-      end: tailLocation
-      radius_: 0.3
-      expanded: true
+    start: headLocation
+    end: tailLocation
+    radius_: 0.3
+    expanded: true
   }
 }

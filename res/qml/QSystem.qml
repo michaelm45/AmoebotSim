@@ -10,7 +10,7 @@ Entity {
   // NodeInstantiator passes each piece of the model to each particle delegate.
   NodeInstantiator {
     id: nodes
-    model: modelListing
+    model: modelParticles
     delegate: QParticle {
       Component.onCompleted: { inspected.connect(inspectionText) }
     }

@@ -37,7 +37,7 @@ Entity {
 
   PhongMaterial {
     id: material
-    ambient: expanded? "black" : "lightgrey"
+    ambient: expanded ? "black" : "lightgrey"
   }
 
   components: [mesh, material, transform]
