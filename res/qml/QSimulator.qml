@@ -51,7 +51,8 @@ Entity {
 
   property QSystem system : QSystem {
     id: systemLink
-    modelListing: sim.model
+    modelParticles: sim.particles
+    modelEdges: sim.edges
   }
 
   Connections {
@@ -83,14 +84,14 @@ Entity {
     var sumZ = 0;
 
     // Calculates the sum of head and tail locations of all particles
-    for (var i = 0; i < sim.model.length; i++) {
-      sumX += sim.model[i][0].x + sim.model[i][1].x
-      sumY += sim.model[i][0].y + sim.model[i][1].y
-      sumZ += sim.model[i][0].z + sim.model[i][1].z
+    for (var i = 0; i < sim.particles.length; i++) {
+      sumX += sim.particles[i][0].x + sim.particles[i][1].x
+      sumY += sim.particles[i][0].y + sim.particles[i][1].y
+      sumZ += sim.particles[i][0].z + sim.particles[i][1].z
     }
 
     // Returns the center of mass of all particles by taking average of sums.
-    var numNodes = 2.0 * sim.model.length
+    var numNodes = 2.0 * sim.particles.length
     return Qt.vector3d(sumX / numNodes, sumY / numNodes, sumZ / numNodes)
   }
 
@@ -98,9 +99,9 @@ Entity {
     var minYPos = Number.MAX_SAFE_INTEGER
 
     // Finds the minimum y-position in the particle system.
-    for (var i = 0; i < sim.model.length; i++) {
-      if (Math.min(sim.model[i][0].y, sim.model[i][1].y) < minYPos) {
-        minYPos = Math.min(sim.model[i][0].y, sim.model[i][1].y)
+    for (var i = 0; i < sim.particles.length; i++) {
+      if (Math.min(sim.particles[i][0].y, sim.particles[i][1].y) < minYPos) {
+        minYPos = Math.min(sim.particles[i][0].y, sim.particles[i][1].y)
       }
     }
 
@@ -111,9 +112,9 @@ Entity {
     var maxZPos = Number.MIN_SAFE_INTEGER
 
     // Finds the maximum z-position in the particle system.
-    for (var i = 0; i < sim.model.length; i++) {
-      if (Math.max(sim.model[i][0].z, sim.model[i][1].z) > maxZPos) {
-        maxZPos = Math.max(sim.model[i][0].z, sim.model[i][1].z)
+    for (var i = 0; i < sim.particles.length; i++) {
+      if (Math.max(sim.particles[i][0].z, sim.particles[i][1].z) > maxZPos) {
+        maxZPos = Math.max(sim.particles[i][0].z, sim.particles[i][1].z)
       }
     }
 
@@ -121,7 +122,8 @@ Entity {
   }
 
   function refreshSystem() {
-    systemLink.modelListing = sim.model
+    systemLink.modelParticles = sim.particles
+    systemLink.modelEdges = sim.edges
   }
 }
 

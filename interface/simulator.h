@@ -20,11 +20,13 @@
 
 class Simulator : public QObject {
   Q_OBJECT
-  Q_PROPERTY(QList<QVariant> model READ getModel NOTIFY modelSignal)
+  Q_PROPERTY(QList<QVariant> particles READ getParticles NOTIFY particleSignal)
+  Q_PROPERTY(QList<QVariant> edges READ getEdges NOTIFY edgeSignal)
 
  signals:
-  void modelSignal();
   void systemChanged() const;
+  void particleSignal();
+  void edgeSignal();
 
  public:
   // Default constructor (currently creates a System shared pointer).
@@ -34,12 +36,22 @@ class Simulator : public QObject {
   void doPeriodically(std::function<void(void)> f, uint period);
   void callSystemChanged();
 
-  // Returns the list of all particle locations in the system in Cartesian
-  // coordinates. Primarily used by QML rendering.
-  QList<QVariant> getModel() const;
+  // Returns the list of all particles' head/tail node locations in Cartesian
+  // coordinates, colors, and markers. Primarily used by QML rendering.
+  QList<QVariant> getParticles() const;
+
+  // Returns the list of edges between adjacent, occupied nodes to be displayed
+  // in the scene. Each QVariant in the QList contains a QList of the start
+  // and end locations of the edge.
+  QList<QVariant> getEdges() const;
 
  private:
-  std::shared_ptr<System> _system;
+  // Simulator properties.
+  std::shared_ptr<System> _system;  // Shared pointer to particle system.
+  float _spacing = 2;  // Separation factor between rendered nodes.
+
+  // Returns the Cartesian position of a node marker belonging to the given node
+  // and pointing in the specified direction.
   std::vector<double> markerPosInDir(Node marked, int dir) const;
 };
 

@@ -14,19 +14,19 @@ uint Conversion::intToUInt(int i) {
 }
 
 std::vector<double> Conversion::cartesianPos(std::vector<int> latticePos) {
-  int i = latticePos[0];
-  int j = latticePos[1];
-  int k = latticePos[2];
+  int x_l = latticePos[0];
+  int y_l = latticePos[1];
+  int z_l = latticePos[2];
 
-  double x = i + j/2.0 + k/2.0;
-  double y = sqrt(3.0)/2 * j - sqrt(3.0)/4 * k;
-  double z = sqrt(6.0)/3 * k;
+  double x_c = x_l + y_l/2.0 + z_l/2.0;
+  double y_c = sqrt(3.0)/2.0 * y_l - sqrt(3.0)/6.0 * z_l;
+  double z_c = sqrt(6.0)/3.0 * z_l;
 
-  return {x, y, z};
+  return {x_c, y_c, z_c};
 }
 
-QVector3D Conversion::vectToQVect(std::vector<double> vect) {
-  Q_ASSERT(vect.size() == 3);
-  return {static_cast<float>(vect[0]), static_cast<float>(vect[1]),
-          static_cast<float>(vect[2])};
+QVector3D Conversion::vecToQVec3D(std::vector<double> vec) {
+  Q_ASSERT(vec.size() == 3);
+  return {static_cast<float>(vec[0]), static_cast<float>(vec[1]),
+          static_cast<float>(vec[2])};
 }
